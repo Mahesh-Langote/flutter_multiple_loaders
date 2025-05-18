@@ -1,15 +1,19 @@
-name: Flutter Multiple Loaders CI
+name: Flutter Multiple Loaders CI/CD
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    types: [opened, synchronize]
+  pull_request_target:
+    types: [closed]
+    branches: [ main ]
 
 jobs:
-  build:
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       
@@ -21,15 +25,56 @@ jobs:
       
       - name: Install dependencies
         run: flutter pub get
-        
-      - name: Verify formatting
-        run: flutter format --set-exit-if-changed .
-        
-      - name: Analyze project source
+      
+      - name: Format code
+        run: dart format --set-exit-if-changed .
+      
+      - name: Analyze code
         run: flutter analyze
-        
+      
       - name: Run tests
         run: flutter test
-        
-      - name: Check publish warnings
+    publish-package:
+    name: Publish to pub.dev
+    needs: build-and-test
+    # Only run this job when a PR is merged to main
+    if: github.event_name == 'pull_request_target' && github.event.pull_request.merged == true && github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: 'stable'
+      
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Check if version was updated
+        id: check_version
+        run: |
+          git fetch origin main
+          PREV_VERSION=$(git show origin/main:pubspec.yaml | grep -Po '(?<=^version: ).+$')
+          CURRENT_VERSION=$(grep -Po '(?<=^version: ).+$' pubspec.yaml)
+          if [ "$PREV_VERSION" != "$CURRENT_VERSION" ]; then
+            echo "Version changed from $PREV_VERSION to $CURRENT_VERSION"
+            echo "version_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "Version unchanged ($CURRENT_VERSION)"
+            echo "version_changed=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Setup Pub Credentials
+        if: steps.check_version.outputs.version_changed == 'true'
+        run: |
+          mkdir -p $HOME/.pub-cache
+          echo '${{ secrets.PUB_CREDENTIALS }}' > $HOME/.pub-cache/credentials.json
+      
+      - name: Check Publish Requirements
+        if: steps.check_version.outputs.version_changed == 'true'
         run: flutter pub publish --dry-run
+      
+      - name: Publish Package
+        if: steps.check_version.outputs.version_changed == 'true'
+        run: flutter pub publish 

@@ -2,6 +2,8 @@
 ///
 /// This library provides a collection of loading animations that can be easily
 /// integrated into Flutter applications with customizable options.
+// ignore: unnecessary_library_name
+library flutter_multiple_loaders;
 
 // Export all animations
 export 'src/animations/spinner_loader.dart';

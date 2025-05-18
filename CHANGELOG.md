@@ -1,3 +1,11 @@
+## 0.0.2
+
+* Fixed library documentation format
+* Added proper library directive to main file
+* Improved CI/CD workflow for more reliable package publishing
+* Implemented version change detection in CI/CD pipeline
+* Added automated checks for pull request merges
+
 ## 0.0.1
 
 Initial release with the following features:
