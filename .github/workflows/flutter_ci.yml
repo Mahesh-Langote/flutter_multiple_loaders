@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -33,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -47,14 +51,24 @@ jobs:
         id: check_version
         run: |
           git fetch origin main
-          PREV_VERSION=$(git show origin/main~1:pubspec.yaml | grep -Po '(?<=^version: ).+$')
-          CURRENT_VERSION=$(grep -Po '(?<=^version: ).+$' pubspec.yaml)
-          if [ "$PREV_VERSION" != "$CURRENT_VERSION" ]; then
-            echo "Version changed from $PREV_VERSION to $CURRENT_VERSION"
-            echo "version_changed=true" >> $GITHUB_OUTPUT
+          # Get the current commit hash
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+          # Get the previous commit hash
+          PREV_COMMIT=$(git rev-parse HEAD^)
+          # Check if this is the first commit in the repo
+          if git rev-parse HEAD^ >/dev/null 2>&1; then
+            PREV_VERSION=$(git show $PREV_COMMIT:pubspec.yaml 2>/dev/null | grep -Po '(?<=^version: ).+$' || echo "0.0.0")
+            CURRENT_VERSION=$(grep -Po '(?<=^version: ).+$' pubspec.yaml)
+            if [ "$PREV_VERSION" != "$CURRENT_VERSION" ]; then
+              echo "Version changed from $PREV_VERSION to $CURRENT_VERSION"
+              echo "version_changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "Version unchanged ($CURRENT_VERSION)"
+              echo "version_changed=false" >> $GITHUB_OUTPUT
+            fi
           else
-            echo "Version unchanged ($CURRENT_VERSION)"
-            echo "version_changed=false" >> $GITHUB_OUTPUT
+            echo "First commit in repository, publishing initial version"
+            echo "version_changed=true" >> $GITHUB_OUTPUT
           fi
       
       - name: Setup Pub Credentials
