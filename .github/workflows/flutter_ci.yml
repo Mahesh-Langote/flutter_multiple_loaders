@@ -1,12 +1,6 @@
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-    types: [opened, synchronize]
-  pull_request_target:
-    types: [closed]
-    branches: [ main ]
 
 jobs:
   build-and-test:
@@ -36,8 +30,6 @@ jobs:
   publish-package:
     name: Publish to pub.dev
     needs: build-and-test
-    # Only run this job when a PR is merged to main
-    if: github.event_name == 'pull_request_target' && github.event.pull_request.merged == true && github.base_ref == 'main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -55,7 +47,7 @@ jobs:
         id: check_version
         run: |
           git fetch origin main
-          PREV_VERSION=$(git show origin/main:pubspec.yaml | grep -Po '(?<=^version: ).+$')
+          PREV_VERSION=$(git show origin/main~1:pubspec.yaml | grep -Po '(?<=^version: ).+$')
           CURRENT_VERSION=$(grep -Po '(?<=^version: ).+$' pubspec.yaml)
           if [ "$PREV_VERSION" != "$CURRENT_VERSION" ]; then
             echo "Version changed from $PREV_VERSION to $CURRENT_VERSION"
