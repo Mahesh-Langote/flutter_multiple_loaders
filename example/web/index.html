@@ -1,38 +1,240 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A showcase of beautiful and customizable loaders for Flutter applications, developed by Mahesh Langote">
+  <meta name="keywords" content="Flutter, Loaders, Animations, Spinner, UI Components, Mobile Development, Web Development">
+  <meta name="author" content="Mahesh Langote">
+  
+  <!-- Open Graph / Social Media Meta Tags -->
+  <!-- Open Graph / Social Media Meta Tags -->
+  <meta property="og:title" content="Flutter Multiple Loaders">
+  <meta property="og:description" content="A showcase of beautiful and customizable loaders for Flutter applications">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://maheshlangote.in">
+  
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="example">
+  <meta name="apple-mobile-web-app-title" content="Flutter Multiple Loaders">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>example</title>
+  <title>Flutter Multiple Loaders | Mahesh Langote</title>
   <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Splash Screen Styles -->
+   <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MV7PBGWG34"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MV7PBGWG34');
+</script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .splash-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(145deg, #ffffff, #f0f0f0);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
+      transition: opacity 0.6s ease-out;
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.03);
+    }
+
+    .splash-logo {
+      margin-bottom: 20px;
+    }
+
+    .splash-spinner-container {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 30px;
+    }
+
+    .splash-spinner {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .splash-spinner:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 5px solid rgba(0, 0, 0, 0.05);
+      box-sizing: border-box;
+    }
+
+    .splash-spinner:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 5px solid transparent;
+      border-top-color: #2196F3;
+      border-left-color: #2196F3;
+      box-sizing: border-box;
+      animation: spinner-animation 1.2s cubic-bezier(0.66, 0, 0.34, 1) infinite;
+    }
+
+    .splash-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .splash-subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      color: #666;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    
+    .developer-info {
+      font-size: 14px;
+      color: #777;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .developer-name {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .developer-website {
+      color: #2196F3;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .developer-website:hover {
+      color: #0d47a1;
+    }
+
+    .loader-types {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .loader-type {
+      font-size: 12px;
+      background-color: rgba(33, 150, 243, 0.1);
+      color: #2196F3;
+      padding: 6px 12px;
+      border-radius: 16px;
+    }
+
+    @keyframes spinner-animation {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
 </head>
-<body>
+<body>  <!-- Splash Screen -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-logo">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M40 0C17.9086 0 0 17.9086 0 40C0 62.0914 17.9086 80 40 80C62.0914 80 80 62.0914 80 40C80 17.9086 62.0914 0 40 0Z" fill="#E1F5FE"/>
+        <path d="M40 10C23.4315 10 10 23.4315 10 40C10 56.5685 23.4315 70 40 70C56.5685 70 70 56.5685 70 40C70 23.4315 56.5685 10 40 10Z" fill="#2196F3" opacity="0.2"/>
+      </svg>
+    </div>
+    <div class="splash-spinner-container">
+      <div class="splash-spinner"></div>
+    </div>
+    <div class="splash-title">Flutter Multiple Loaders</div>
+    <div class="splash-subtitle">Beautiful and customizable loading animations</div>
+    
+
+    
+
+  </div>
+  <script>
+    // Show splash screen features
+    const loaderTypes = document.querySelectorAll('.loader-type');
+    let currentIndex = 0;
+    
+    // Highlight loader types sequentially
+    function highlightNext() {
+      // Reset all
+      loaderTypes.forEach(loader => {
+        loader.style.backgroundColor = 'rgba(33, 150, 243, 0.1)';
+        loader.style.color = '#2196F3';
+      });
+      
+      // Highlight current
+      if (loaderTypes[currentIndex]) {
+        loaderTypes[currentIndex].style.backgroundColor = '#2196F3';
+        loaderTypes[currentIndex].style.color = 'white';
+        currentIndex = (currentIndex + 1) % loaderTypes.length;
+      }
+    }
+    
+    // Start highlight animation
+    highlightNext();
+    const highlightInterval = setInterval(highlightNext, 800);
+    
+    // Hide splash screen once Flutter app is loaded
+    window.addEventListener('flutter-first-frame', function() {
+      var splashScreen = document.getElementById('splash-screen');
+      if (splashScreen) {
+        splashScreen.classList.add('hidden');
+        // Clear the highlight interval
+        clearInterval(highlightInterval);
+        // Remove splash screen from DOM after transition
+        setTimeout(function() {
+          if (splashScreen && splashScreen.parentNode) {
+            splashScreen.parentNode.removeChild(splashScreen);
+          }
+        }, 600);
+      }
+    });
+  </script>
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
