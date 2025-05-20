@@ -56,10 +56,12 @@ class _WaveLoaderState extends State<WaveLoader>
   void _initializeAnimations() {
     _barAnimations = List.generate(widget.barCount, (index) {
       final delay = index / widget.barCount;
+      // Ensure end value never exceeds 1.0
+      final endValue = (delay + 0.5).clamp(0.0, 1.0);
       return Tween<double>(begin: 0.3, end: 1.0).animate(
         CurvedAnimation(
           parent: _animationController,
-          curve: Interval(delay, delay + 0.5, curve: Curves.easeInOut),
+          curve: Interval(delay, endValue, curve: Curves.easeInOut),
         ),
       );
     });
