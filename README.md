@@ -24,6 +24,7 @@ This package includes multiple loading animation styles with customizable proper
 - **Wave Loader**: Multiple bars that animate in a wave-like pattern
 - **Circle Loader**: A circular progress indicator with customizable properties
 - **Dots Loader**: Multiple dots that fade in and out in sequence
+- **Rotating Square Loader**: A square that rotates on its center axis
 
 All loaders feature:
 - Customizable sizes (extra small to extra large)
