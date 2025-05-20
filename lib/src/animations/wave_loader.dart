@@ -52,6 +52,7 @@ class _WaveLoaderState extends State<WaveLoader>
       _animationController.forward();
     }
   }
+
   void _initializeAnimations() {
     _barAnimations = List.generate(widget.barCount, (index) {
       final delay = index / widget.barCount;

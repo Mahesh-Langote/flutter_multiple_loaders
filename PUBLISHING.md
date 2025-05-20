@@ -16,7 +16,7 @@ This guide covers how to publish the Flutter Multiple Loaders package to [pub.de
 
 3. Verify Package Quality
    - Run tests: `flutter test`
-   - Format code: `flutter format .`
+   - Format code: `dart format .`
    - Run analysis: `flutter analyze`
    - Run example app to verify functionality
 
