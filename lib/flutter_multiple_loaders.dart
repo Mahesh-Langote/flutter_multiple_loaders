@@ -12,6 +12,8 @@ export 'src/animations/bounce_loader.dart';
 export 'src/animations/wave_loader.dart';
 export 'src/animations/circle_loader.dart';
 export 'src/animations/dots_loader.dart';
+export 'src/animations/rotating_square_loader.dart';
+export 'src/animations/flipping_card_loader.dart';
 
 // Export utility classes
 export 'src/utils/loader_size.dart';

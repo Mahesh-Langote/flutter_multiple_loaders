@@ -86,6 +86,9 @@ class _BounceLoaderState extends State<BounceLoader>
 
   @override
   void dispose() {
+    // Stop the animation before disposing
+    _animationController.stop();
+    // Only dispose the controller if we created it internally
     if (widget.controller == null) {
       _animationController.dispose();
     }
