@@ -1,3 +1,7 @@
+## 0.0.3
+
+* Fixed wave animation assertion error where curve end value could exceed 1.0, causing the animation to fail
+
 ## 0.0.2
 
 * Fixed library documentation format
