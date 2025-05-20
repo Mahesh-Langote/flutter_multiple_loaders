@@ -1,3 +1,8 @@
+## 0.0.4
+
+* Added rotating square and flipping card animation
+* Enhanced web example with an improved splash screen
+
 ## 0.0.3
 
 * Fixed wave animation assertion error where curve end value could exceed 1.0, causing the animation to fail
