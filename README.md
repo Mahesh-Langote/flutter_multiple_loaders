@@ -2,6 +2,18 @@
 
 A Flutter package providing a collection of customizable loading animations for your Flutter applications.
 
+## Screenshots
+
+Here are examples of the different loaders included in this package:
+
+| Spinner Loader | Pulse Loader | Bounce Loader |
+|:---:|:---:|:---:|
+| ![Spinner Loader](screenshots/spinner_loader.gif) | ![Pulse Loader](screenshots/pulse_loader.gif) | ![Bounce Loader](screenshots/bounce_loader.gif) |
+
+| Wave Loader | Circle Loader | Dots Loader |
+|:---:|:---:|:---:|
+| ![Wave Loader](screenshots/wave_loader.gif) | ![Circle Loader](screenshots/circle_loader.gif) | ![Dots Loader](screenshots/dots_loader.gif) |
+
 ## Features
 
 This package includes multiple loading animation styles with customizable properties:
@@ -127,6 +139,17 @@ class _MyWidgetState extends State<MyWidget> {
   }
 }
 ```
+
+## Interactive Example
+
+The package includes a complete example app that demonstrates all loaders with interactive controls for customization:
+ 
+
+The example app allows you to:
+- Switch between different loader types
+- Change sizes and colors
+- Control animation duration
+- Start, stop, and reset animations
 
 Check the [example](./example) folder for more detailed usage examples.
 
