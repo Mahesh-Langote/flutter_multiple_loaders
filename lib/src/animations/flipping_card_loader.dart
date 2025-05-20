@@ -110,7 +110,7 @@ class _FlippingCardLoaderState extends State<FlippingCardLoader>
                               _flipAnimation.value > 3 * math.pi / 2
                           ? widget.options.color
                           : widget.options.secondaryColor ??
-                              widget.options.color.withOpacity(0.7),
+                              widget.options.color.withValues(alpha: .7),
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
@@ -124,7 +124,7 @@ class _FlippingCardLoaderState extends State<FlippingCardLoader>
                           ? Border.all(
                             color:
                                 widget.options.backgroundColor ??
-                                Colors.white.withOpacity(0.5),
+                                Colors.white.withValues(alpha: .5),
                             width: widget.options.strokeWidth,
                           )
                           : null,
