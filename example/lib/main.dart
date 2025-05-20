@@ -126,6 +126,7 @@ class _LoadersShowcaseState extends State<LoadersShowcase> {
   }
 
   Widget _buildLoaderTab(Widget Function(LoaderOptions options) loaderBuilder) {
+    // Create loader options from current state each time the widget is built
     final options = LoaderOptions(
       color: _selectedColor,
       size: _selectedSize,
@@ -169,21 +170,25 @@ class _LoadersShowcaseState extends State<LoadersShowcase> {
             children: [
               IconButton.filled(
                 onPressed: () {
-                  if (_isAnimating) {
-                    _controller.stop();
-                  } else {
-                    _controller.start();
-                  }
-                  setState(() => _isAnimating = !_isAnimating);
+                  setState(() {
+                    _isAnimating = !_isAnimating;
+                    if (_isAnimating) {
+                      _controller.start();
+                    } else {
+                      _controller.stop();
+                    }
+                  });
                 },
                 icon: Icon(_isAnimating ? Icons.pause : Icons.play_arrow),
                 tooltip: _isAnimating ? 'Pause' : 'Play',
               ),
               IconButton.filled(
                 onPressed: () {
-                  _controller.reset();
-                  _controller.start();
-                  setState(() => _isAnimating = true);
+                  setState(() {
+                    _isAnimating = true;
+                    _controller.reset();
+                    _controller.start();
+                  });
                 },
                 icon: const Icon(Icons.refresh),
                 tooltip: 'Reset',

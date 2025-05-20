@@ -66,18 +66,29 @@ class _SpinnerLoaderState extends State<SpinnerLoader>
   @override
   void didUpdateWidget(SpinnerLoader oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    // Update animation duration if it changed
     if (oldWidget.options.durationMs != widget.options.durationMs) {
       _animationController.duration = Duration(
         milliseconds: widget.options.durationMs,
       );
     }
 
+    // Handle loop state changes
     if (oldWidget.options.loop != widget.options.loop) {
       if (widget.options.loop) {
         _animationController.repeat();
-      } else {
+      } else if (_animationController.isAnimating) {
+        // Only forward if animating, otherwise keep current state
         _animationController.forward();
       }
+    }
+
+    // If we switched from non-loop to loop and animation completed, restart it
+    if (widget.options.loop &&
+        !oldWidget.options.loop &&
+        _animationController.status == AnimationStatus.completed) {
+      _animationController.repeat();
     }
   }
 
