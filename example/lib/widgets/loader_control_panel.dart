@@ -71,126 +71,273 @@ class LoaderControlPanel extends StatelessWidget {
     required this.onTertiaryColorChanged,
     this.onStrokeWidthChanged,
   });
-
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive adjustments
+    final screenSize = MediaQuery.of(context).size;
+    final bool isSmallScreen = screenSize.width < 600;
+    final bool isLandscape = screenSize.width > screenSize.height;
+    final bool isWideScreen = screenSize.width >= 900;
+
+    // Determine if we're in a side-by-side layout
+    final bool useSideBySideLayout = isLandscape && isWideScreen;
+
+    // Return the container with all contents
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        borderRadius:
+            useSideBySideLayout
+                ? const BorderRadius.all(Radius.circular(16))
+                : const BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton.filled(
-                  onPressed: () {
-                    final newState = !isAnimating;
-                    onAnimatingChanged(newState);
-                    if (newState) {
-                      controller.start();
-                    } else {
-                      controller.stop();
-                    }
-                  },
-                  icon: Icon(isAnimating ? Icons.pause : Icons.play_arrow),
-                  tooltip: isAnimating ? 'Pause' : 'Play',
+            // Section title
+            if (useSideBySideLayout)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Text(
+                  'Control Panel',
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
-                IconButton.filled(
-                  onPressed: () {
-                    onAnimatingChanged(true);
-                    controller.reset();
-                    controller.start();
-                  },
-                  icon: const Icon(Icons.refresh),
-                  tooltip: 'Reset',
-                ),
-              ],
+              ),
+
+            // Action buttons
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        final newState = !isAnimating;
+                        onAnimatingChanged(newState);
+                        if (newState) {
+                          controller.start();
+                        } else {
+                          controller.stop();
+                        }
+                      },
+                      icon: Icon(isAnimating ? Icons.pause : Icons.play_arrow),
+                      label: Text(isAnimating ? 'Pause' : 'Play'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        onAnimatingChanged(true);
+                        controller.reset();
+                        controller.start();
+                      },
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Reset'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Size:'),
-                DropdownButton<LoaderSize>(
-                  value: selectedSize,
-                  items:
-                      LoaderSize.values
-                          .where((size) => size != LoaderSize.custom)
-                          .map(
-                            (size) => DropdownMenuItem(
-                              value: size,
-                              child: Text(size.name),
-                            ),
-                          )
-                          .toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      onSizeChanged(value);
-                    }
-                  },
-                ),
-              ],
+
+            const Divider(),
+
+            // Size control
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      'Size:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: isSmallScreen ? 14 : 16,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: DropdownButton<LoaderSize>(
+                      value: selectedSize,
+                      isExpanded: true,
+                      items:
+                          LoaderSize.values
+                              .where((size) => size != LoaderSize.custom)
+                              .map(
+                                (size) => DropdownMenuItem(
+                                  value: size,
+                                  child: Text(size.name),
+                                ),
+                              )
+                              .toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          onSizeChanged(value);
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Primary Color:'),
-                _buildPrimaryColorDropdown(),
-              ],
+
+            // Color controls
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      'Primary Color:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: isSmallScreen ? 14 : 16,
+                      ),
+                    ),
+                  ),
+                  Expanded(flex: 3, child: _buildPrimaryColorDropdown()),
+                ],
+              ),
             ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Secondary Color:'),
-                _buildSecondaryColorDropdown(),
-              ],
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      'Secondary Color:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: isSmallScreen ? 14 : 16,
+                      ),
+                    ),
+                  ),
+                  Expanded(flex: 3, child: _buildSecondaryColorDropdown()),
+                ],
+              ),
             ),
+
             if (tertiaryColor != null)
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Tertiary Color:'),
-                    _buildTertiaryColorDropdown(),
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        'Tertiary Color:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: isSmallScreen ? 14 : 16,
+                        ),
+                      ),
+                    ),
+                    Expanded(flex: 3, child: _buildTertiaryColorDropdown()),
                   ],
                 ),
               ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Duration:'),
-                Slider(
-                  value: durationMs.toDouble(),
-                  min: 500,
-                  max: 6000,
-                  divisions: 11,
-                  label: '${durationMs}ms',
-                  onChanged: (value) {
-                    onDurationChanged(value.toInt());
-                  },
-                ),
-              ],
-            ),
-            if (showStrokeWidth &&
-                strokeWidth != null &&
-                onStrokeWidthChanged != null)
-              Column(
+
+            // Slider controls
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Stroke Width:'),
-                      Slider(
+                      Text(
+                        'Duration:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: isSmallScreen ? 14 : 16,
+                        ),
+                      ),
+                      Text(
+                        '${durationMs}ms',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      thumbShape: const RoundSliderThumbShape(
+                        enabledThumbRadius: 8.0,
+                      ),
+                      overlayShape: const RoundSliderOverlayShape(
+                        overlayRadius: 16.0,
+                      ),
+                    ),
+                    child: Slider(
+                      value: durationMs.toDouble(),
+                      min: 500,
+                      max: 6000,
+                      divisions: 11,
+                      label: '${durationMs}ms',
+                      onChanged: (value) {
+                        onDurationChanged(value.toInt());
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            if (showStrokeWidth &&
+                strokeWidth != null &&
+                onStrokeWidthChanged != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Stroke Width:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: isSmallScreen ? 14 : 16,
+                          ),
+                        ),
+                        Text(
+                          '${strokeWidth!.toStringAsFixed(1)}',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        thumbShape: const RoundSliderThumbShape(
+                          enabledThumbRadius: 8.0,
+                        ),
+                        overlayShape: const RoundSliderOverlayShape(
+                          overlayRadius: 16.0,
+                        ),
+                      ),
+                      child: Slider(
                         value: strokeWidth!,
                         min: 1.0,
                         max: 10.0,
@@ -198,9 +345,9 @@ class LoaderControlPanel extends StatelessWidget {
                         label: strokeWidth!.toStringAsFixed(1),
                         onChanged: onStrokeWidthChanged!,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
           ],
         ),

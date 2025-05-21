@@ -85,6 +85,11 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive layout
+    final screenSize = MediaQuery.of(context).size;
+    final bool isSmallScreen = screenSize.width < 600;
+    final bool isLandscape = screenSize.width > screenSize.height;
+
     if (_categories.isEmpty) {
       return const Scaffold(body: Center(child: Text('No loaders available')));
     }
@@ -108,70 +113,52 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
     // Create the current loader widget
     final loaderWidget = currentLoader.createLoader(options, _controller);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter Multiple Loaders'),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Category tabs
-            TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              tabs:
-                  _categories
-                      .map((category) => Tab(text: category.name))
-                      .toList(),
-            ),
+    // Create an adaptive layout based on screen orientation and size
+    Widget content;
 
-            // Loader selection
-            SizedBox(
-              height: 60,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
+    if (isLandscape && screenSize.width >= 900) {
+      // Wide landscape layout - side by side
+      content = Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Left panel - showcase
+          Expanded(
+            flex: 3,
+            child: Column(
+              children: [
+                // Category tabs
+                TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
+                  tabs:
+                      _categories
+                          .map((category) => Tab(text: category.name))
+                          .toList(),
                 ),
-                itemCount: currentLoaders.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: ActionChip(
-                      avatar: Icon(
-                        Icons.circle,
-                        color: currentLoaders[index].primaryColor,
-                        size: 16,
-                      ),
-                      label: Text(currentLoaders[index].name),
-                      onPressed:
-                          () => _updateSelectedLoader(
-                            _selectedCategoryIndex,
-                            index,
-                          ),
+
+                // Loader selection
+                _buildLoaderSelection(currentLoaders),
+
+                // Loader showcase
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: LoaderShowcaseWidget(
+                      title: '${currentLoader.name} Loader',
+                      description: currentLoader.description,
+                      loader: loaderWidget,
                     ),
-                  );
-                },
-              ),
-            ),
-
-            // Loader showcase
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: LoaderShowcaseWidget(
-                  title: '${currentLoader.name} Loader',
-                  description: currentLoader.description,
-                  loader: loaderWidget,
+                  ),
                 ),
-              ),
+              ],
             ),
+          ),
 
-            // Control panel - using fixed version
-            LoaderControlPanel(
+          // Right panel - controls
+          Expanded(
+            flex: 2,
+            child: LoaderControlPanel(
               controller: _controller,
               isAnimating: _isAnimating,
               selectedSize: _selectedSize,
@@ -196,9 +183,167 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
                       ? (value) => setState(() => _strokeWidth = value)
                       : null,
             ),
-          ],
+          ),
+        ],
+      );
+    } else {
+      // Portrait or narrow layout - stacked vertically
+      content = Column(
+        children: [
+          // Category tabs with scrollable behavior for small screens
+          TabBar(
+            controller: _tabController,
+            isScrollable: true,
+            tabs:
+                _categories
+                    .map((category) => Tab(text: category.name))
+                    .toList(),
+          ),
+
+          // Loader selection
+          _buildLoaderSelection(currentLoaders),
+
+          // Loader showcase
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(isSmallScreen ? 8 : 16),
+              child: LoaderShowcaseWidget(
+                title: '${currentLoader.name} Loader',
+                description: currentLoader.description,
+                loader: loaderWidget,
+              ),
+            ),
+          ),
+
+          // Control panel
+          LoaderControlPanel(
+            controller: _controller,
+            isAnimating: _isAnimating,
+            selectedSize: _selectedSize,
+            primaryColor: _primaryColor,
+            secondaryColor: _secondaryColor,
+            tertiaryColor: _tertiaryColor,
+            durationMs: _durationMs,
+            strokeWidth: _strokeWidth,
+            showStrokeWidth: currentLoader.usesStrokeWidth,
+            onAnimatingChanged: (value) => setState(() => _isAnimating = value),
+            onSizeChanged: (value) => setState(() => _selectedSize = value),
+            onPrimaryColorChanged:
+                (value) => setState(() => _primaryColor = value),
+            onSecondaryColorChanged:
+                (value) => setState(() => _secondaryColor = value),
+            onTertiaryColorChanged:
+                (value) => setState(() => _tertiaryColor = value),
+            onDurationChanged: (value) => setState(() => _durationMs = value),
+            onStrokeWidthChanged:
+                currentLoader.usesStrokeWidth
+                    ? (value) => setState(() => _strokeWidth = value)
+                    : null,
+          ),
+        ],
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Flutter Multiple Loaders',
+          style: isSmallScreen ? const TextStyle(fontSize: 18) : null,
         ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () => _showInfoDialog(context),
+            tooltip: 'About',
+          ),
+        ],
       ),
+      body: SafeArea(child: content),
+    );
+  }
+
+  // Extract loader selection into a separate method
+  Widget _buildLoaderSelection(List<LoaderInfo> loaders) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 600;
+
+    return SizedBox(
+      height: isSmallScreen ? 50 : 60,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(
+          horizontal: isSmallScreen ? 8 : 16,
+          vertical: isSmallScreen ? 6 : 8,
+        ),
+        itemCount: loaders.length,
+        itemBuilder: (context, index) {
+          final isSelected = index == _selectedLoaderIndex;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: ActionChip(
+              avatar: Icon(
+                Icons.circle,
+                color: loaders[index].primaryColor,
+                size: 16,
+              ),
+              label: Text(
+                loaders[index].name,
+                style: TextStyle(
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+              backgroundColor:
+                  isSelected
+                      ? Theme.of(context).colorScheme.primaryContainer
+                      : null,
+              onPressed:
+                  () => _updateSelectedLoader(_selectedCategoryIndex, index),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Add info dialog
+  void _showInfoDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('About Flutter Multiple Loaders'),
+            content: const SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'A comprehensive collection of customizable loading animations for Flutter applications.',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    'Features:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text('• Multiple loader types'),
+                  Text('• Customizable colors'),
+                  Text('• Adjustable sizes'),
+                  Text('• Animation control'),
+                  Text('• Responsive design'),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Close'),
+              ),
+            ],
+          ),
     );
   }
 }
