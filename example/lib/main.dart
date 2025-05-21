@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multiple_loaders/flutter_multiple_loaders.dart';
+import 'innovative_loaders_showcase.dart';
 
 void main() {
   runApp(const ExampleApp());
@@ -16,7 +17,101 @@ class ExampleApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const LoadersShowcase(),
+      home: const MainScreen(),
+    );
+  }
+}
+
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter Multiple Loaders'),
+        elevation: 2,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Choose a Demo',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 32),
+            _buildNavButton(
+              context: context,
+              title: 'Standard Loaders',
+              description: 'Classic loading animations',
+              destination: const LoadersShowcase(),
+              color: Colors.blue,
+            ),
+            const SizedBox(height: 16),
+            _buildNavButton(
+              context: context,
+              title: 'Innovative Loaders',
+              description: 'Unique & creative animations',
+              destination: const InnovativeLoadersShowcase(),
+              color: Colors.purple,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavButton({
+    required BuildContext context,
+    required String title,
+    required String description,
+    required Widget destination,
+    required Color color,
+  }) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      onPressed:
+          () => Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (context) => destination)),
+      child: Container(
+        width: 250,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [color, color.withOpacity(0.7)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              description,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white.withOpacity(0.8),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

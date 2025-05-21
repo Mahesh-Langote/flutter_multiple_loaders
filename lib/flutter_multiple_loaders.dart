@@ -17,6 +17,14 @@ export 'src/animations/flipping_card_loader.dart';
 export 'src/animations/glowing_loader.dart';
 export 'src/animations/typing_loader.dart';
 
+// Export new innovative animations
+export 'src/animations/dna_helix_loader.dart';
+export 'src/animations/morphing_shape_loader.dart';
+export 'src/animations/galaxy_spiral_loader.dart';
+export 'src/animations/particle_vortex_loader.dart';
+export 'src/animations/fractal_tree_loader.dart';
+export 'src/animations/liquid_blob_loader.dart';
+
 // Export utility classes
 export 'src/utils/loader_size.dart';
 export 'src/utils/loader_controller.dart';
