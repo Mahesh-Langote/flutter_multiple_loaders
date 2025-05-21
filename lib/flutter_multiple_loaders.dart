@@ -16,6 +16,7 @@ export 'src/animations/rotating_square_loader.dart';
 export 'src/animations/flipping_card_loader.dart';
 export 'src/animations/glowing_loader.dart';
 export 'src/animations/typing_loader.dart';
+export 'src/animations/blinking_loader.dart';
 
 // Export new innovative animations
 export 'src/animations/dna_helix_loader.dart';

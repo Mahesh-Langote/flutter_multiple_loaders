@@ -1,6 +1,7 @@
 # Flutter Multiple Loaders
 
 A Flutter package providing a collection of customizable loading animations for your Flutter applications.
+
 <h3 align="center"><i>Define. Get. Set. Done.</i></h3>
 <p align="center">
         <img src="https://img.shields.io/codefactor/grade/github/mahesh-langote/flutter_multiple_loaders/main">
@@ -18,12 +19,12 @@ A Flutter package providing a collection of customizable loading animations for 
 
 Here are examples of the different loaders included in this package:
 
-| Spinner Loader | Pulse Loader | Bounce Loader |
-|:---:|:---:|:---:|
+|                  Spinner Loader                   |                 Pulse Loader                  |                  Bounce Loader                  |
+| :-----------------------------------------------: | :-------------------------------------------: | :---------------------------------------------: |
 | ![Spinner Loader](screenshots/spinner_loader.gif) | ![Pulse Loader](screenshots/pulse_loader.gif) | ![Bounce Loader](screenshots/bounce_loader.gif) |
 
-| Wave Loader | Circle Loader | Dots Loader |
-|:---:|:---:|:---:|
+|                 Wave Loader                 |                  Circle Loader                  |                 Dots Loader                 |
+| :-----------------------------------------: | :---------------------------------------------: | :-----------------------------------------: |
 | ![Wave Loader](screenshots/wave_loader.gif) | ![Circle Loader](screenshots/circle_loader.gif) | ![Dots Loader](screenshots/dots_loader.gif) |
 
 ## Features
@@ -39,8 +40,10 @@ This package includes multiple loading animation styles with customizable proper
 - **Rotating Square Loader**: A square that rotates on its center axis
 - **Glowing Loader**: A circle with pulsing glow effects and gradient colors
 - **Typing Loader**: A typing indicator with animated dots, commonly used in chat applications
+- **Blinking Loader**: A shape (circle, square, triangle, or star) that fades in and out
 
 ### Innovative Loaders
+
 - **DNA Helix Loader**: An animated double helix that rotates in 3D space with connecting "rungs" between the strands
 - **Morphing Shape Loader**: A shape that smoothly transitions between different geometric forms
 - **Galaxy Spiral Loader**: A spiral galaxy with stars rotating around a glowing core
@@ -49,6 +52,7 @@ This package includes multiple loading animation styles with customizable proper
 - **Liquid Blob Loader**: A morphing liquid-like blob with fluid motion and realistic highlights
 
 All loaders feature:
+
 - Customizable sizes (extra small to extra large)
 - Custom colors (primary, secondary, and tertiary)
 - Adjustable animation speed
@@ -61,7 +65,7 @@ Add the dependency to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_multiple_loaders: ^0.0.1
+  flutter_multiple_loaders: ^0.0.7
 ```
 
 Then run:
@@ -89,7 +93,7 @@ SpinnerLoader();
 // Pulse animation
 PulseLoader();
 
-// Bounce animation 
+// Bounce animation
 BounceLoader();
 
 // Wave animation
@@ -97,6 +101,12 @@ WaveLoader();
 
 // Circle animation
 CircleLoader();
+
+// Blinking animation with different shapes
+BlinkingLoader();  // default is circle
+BlinkingLoader(shape: BlinkingShape.square);
+BlinkingLoader(shape: BlinkingShape.triangle);
+BlinkingLoader(shape: BlinkingShape.star);
 
 // Dots animation
 DotsLoader();
@@ -127,6 +137,17 @@ WaveLoader(
     size: LoaderSize.medium,
   ),
 );
+
+// Customized blinking star loader
+BlinkingLoader(
+  shape: BlinkingShape.star,
+  options: LoaderOptions(
+    color: Colors.amber,
+    size: LoaderSize.extraLarge,
+    durationMs: 800,
+    loop: true,
+  ),
+);
 ```
 
 ### Controlling Animation Programmatically
@@ -136,23 +157,23 @@ Use the `LoaderController` to control the animation:
 ```dart
 class _MyWidgetState extends State<MyWidget> {
   final LoaderController _controller = LoaderController();
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SpinnerLoader(controller: _controller),
-        
+
         ElevatedButton(
           onPressed: () => _controller.start(),
           child: Text('Start'),
         ),
-        
+
         ElevatedButton(
           onPressed: () => _controller.stop(),
           child: Text('Stop'),
         ),
-        
+
         ElevatedButton(
           onPressed: () => _controller.reset(),
           child: Text('Reset'),
@@ -166,9 +187,9 @@ class _MyWidgetState extends State<MyWidget> {
 ## Interactive Example
 
 The package includes a complete example app that demonstrates all loaders with interactive controls for customization:
- 
 
 The example app allows you to:
+
 - Switch between different loader types
 - Change sizes and colors
 - Control animation duration

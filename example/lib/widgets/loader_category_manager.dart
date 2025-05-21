@@ -175,6 +175,18 @@ class LoaderCategoryManager {
                   dotCount: 3,
                 ),
           ),
+          LoaderInfo(
+            name: 'Blinking',
+            description: 'Shape that blinks with a fade effect',
+            primaryColor: Colors.deepOrange,
+            durationMs: 1200,
+            createLoader:
+                (options, controller) => BlinkingLoader(
+                  options: options,
+                  controller: controller,
+                  shape: BlinkingShape.circle,
+                ),
+          ),
         ],
       ),
       LoaderCategory(

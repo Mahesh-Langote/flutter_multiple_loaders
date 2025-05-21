@@ -1,3 +1,10 @@
+## 0.0.7
+
+* Added new standard loader:
+  * BlinkingLoader: A customizable shape that fades in and out with adjustable timing
+  * Supports multiple shape options: circle, square, triangle, and star
+* Updated example app to showcase the new BlinkingLoader animation
+
 ## 0.0.6
 
 * Added new innovative loaders:
