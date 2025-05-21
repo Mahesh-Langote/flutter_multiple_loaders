@@ -27,6 +27,16 @@ This package includes multiple loading animation styles with customizable proper
 - **Circle Loader**: A circular progress indicator with customizable properties
 - **Dots Loader**: Multiple dots that fade in and out in sequence
 - **Rotating Square Loader**: A square that rotates on its center axis
+- **Glowing Loader**: A circle with pulsing glow effects and gradient colors
+- **Typing Loader**: A typing indicator with animated dots, commonly used in chat applications
+
+### Innovative Loaders
+- **DNA Helix Loader**: An animated double helix that rotates in 3D space with connecting "rungs" between the strands
+- **Morphing Shape Loader**: A shape that smoothly transitions between different geometric forms
+- **Galaxy Spiral Loader**: A spiral galaxy with stars rotating around a glowing core
+- **Particle Vortex Loader**: Mesmerizing particles flowing in a vortex pattern with customizable flow speed and colors
+- **Fractal Tree Loader**: A beautiful animated fractal tree that grows and branches organically
+- **Liquid Blob Loader**: A morphing liquid-like blob with fluid motion and realistic highlights
 
 All loaders feature:
 - Customizable sizes (extra small to extra large)

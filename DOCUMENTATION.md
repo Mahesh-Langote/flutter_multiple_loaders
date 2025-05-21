@@ -119,6 +119,37 @@ DotsLoader(
 )
 ```
 
+### GlowingLoader
+
+A circle with pulsing glow effects and gradient colors.
+
+```dart
+GlowingLoader(
+  options: LoaderOptions(
+    color: Colors.purple,
+    secondaryColor: Colors.purpleAccent, // For gradient and middle glow
+    tertiaryColor: Colors.purple.withOpacity(0.3), // For outer glow
+    size: LoaderSize.large,
+    backgroundColor: Colors.grey.shade200, // Optional background color
+  ),
+)
+```
+
+### TypingLoader
+
+A typing indicator with animated dots, commonly used in chat applications.
+
+```dart
+TypingLoader(
+  dotCount: 3, // Number of dots
+  options: LoaderOptions(
+    color: Colors.blue,
+    size: LoaderSize.medium,
+    durationMs: 1200, // Speed of the typing animation
+  ),
+)
+```
+
 ## Customization Options
 
 All loaders accept a `LoaderOptions` object that allows customization:
