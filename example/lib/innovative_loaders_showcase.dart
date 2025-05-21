@@ -13,6 +13,84 @@ class InnovativeLoadersShowcase extends StatefulWidget {
 }
 
 class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
+  final LoaderController _controller = LoaderController();
+  bool _isAnimating = true;
+  LoaderSize _selectedSize = LoaderSize.large;
+  Color _primaryColor = Colors.deepPurple;
+  Color _secondaryColor = Colors.pinkAccent;
+  Color _tertiaryColor = Colors.white;
+  int _durationMs = 3000;
+  double _strokeWidth = 4.0;
+  String _currentLoaderType = 'DNAHelix';
+  final Map<String, Map<String, dynamic>> _loaderDefaults = {
+    'DNAHelix': {
+      'primaryColor': Colors.deepPurple,
+      'secondaryColor': Colors.pinkAccent,
+      'duration': 3000,
+    },
+    'MorphingShape': {
+      'primaryColor': Colors.teal,
+      'secondaryColor': Colors.amber,
+      'tertiaryColor': Colors.deepOrange,
+      'duration': 3000,
+    },
+    'GalaxySpiral': {
+      'primaryColor': Colors.blue,
+      'secondaryColor': Colors.purple,
+      'tertiaryColor': Colors.white,
+      'duration': 6000,
+    },
+    'ParticleVortex': {
+      'primaryColor': Colors.deepOrange,
+      'secondaryColor': Colors.amber,
+      'tertiaryColor': Colors.redAccent,
+      'duration': 3000,
+    },
+    'FractalTree': {
+      'primaryColor': Colors.green,
+      'secondaryColor': Colors.lightGreenAccent,
+      'duration': 5000,
+    },
+    'LiquidBlob': {
+      'primaryColor': Colors.blueAccent,
+      'secondaryColor': Colors.cyanAccent,
+      'duration': 3000,
+    },
+    'Circle': {'primaryColor': Colors.blue, 'duration': 1500},
+    'Spinner': {'primaryColor': Colors.purple, 'duration': 1500},
+    'Wave': {'primaryColor': Colors.teal, 'duration': 1500},
+  };
+  void _updateLoaderType(String loaderType) {
+    setState(() {
+      _currentLoaderType = loaderType;
+
+      // Set default colors and duration for the selected loader
+      final defaults = _loaderDefaults[loaderType];
+      if (defaults != null) {
+        _primaryColor = defaults['primaryColor'];
+        _secondaryColor = defaults['secondaryColor'];
+        _tertiaryColor = defaults['tertiaryColor'] ?? Colors.white;
+        _durationMs = defaults['duration'];
+
+        // Set specific stroke width for Circle and Spinner loaders
+        if (loaderType == 'Circle') {
+          _strokeWidth = 5.0;
+        } else if (loaderType == 'Spinner') {
+          _strokeWidth = 4.0;
+        } else {
+          _strokeWidth = 4.0; // Default value for other loaders
+        }
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Default to first loader type
+    _updateLoaderType('DNAHelix');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +101,7 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
       ),
       body: SafeArea(
         child: DefaultTabController(
-          length: 6,
+          length: 9,
           child: Column(
             children: [
               const TabBar(
@@ -35,6 +113,9 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
                   Tab(text: 'Particle Vortex'),
                   Tab(text: 'Fractal Tree'),
                   Tab(text: 'Liquid Blob'),
+                  Tab(text: 'Circle'),
+                  Tab(text: 'Spinner'),
+                  Tab(text: 'Wave'),
                 ],
               ),
               Expanded(
@@ -50,12 +131,13 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
                               title: 'DNA Helix Loader',
                               description:
                                   'An animated double helix that rotates in 3D space',
-                              loader: const DnaHelixLoader(
+                              loader: DnaHelixLoader(
+                                controller: _controller,
                                 options: LoaderOptions(
-                                  color: Colors.deepPurple,
-                                  secondaryColor: Colors.pinkAccent,
-                                  size: LoaderSize.large,
-                                  durationMs: 3000,
+                                  color: _primaryColor,
+                                  secondaryColor: _secondaryColor,
+                                  size: _selectedSize,
+                                  durationMs: _durationMs,
                                 ),
                               ),
                             ),
@@ -76,13 +158,14 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
                               title: 'Morphing Shape Loader',
                               description:
                                   'A shape that morphs between geometric forms',
-                              loader: const MorphingShapeLoader(
+                              loader: MorphingShapeLoader(
+                                controller: _controller,
                                 options: LoaderOptions(
-                                  color: Colors.teal,
-                                  secondaryColor: Colors.amber,
-                                  tertiaryColor: Colors.deepOrange,
-                                  size: LoaderSize.large,
-                                  durationMs: 4000,
+                                  color: _primaryColor,
+                                  secondaryColor: _secondaryColor,
+                                  tertiaryColor: _tertiaryColor,
+                                  size: _selectedSize,
+                                  durationMs: _durationMs,
                                 ),
                               ),
                             ),
@@ -103,13 +186,14 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
                               title: 'Galaxy Spiral Loader',
                               description:
                                   'A spiral galaxy with rotating stars and a glowing core',
-                              loader: const GalaxySpiralLoader(
+                              loader: GalaxySpiralLoader(
+                                controller: _controller,
                                 options: LoaderOptions(
-                                  color: Colors.blue,
-                                  secondaryColor: Colors.purple,
-                                  tertiaryColor: Colors.white,
-                                  size: LoaderSize.large,
-                                  durationMs: 6000,
+                                  color: _primaryColor,
+                                  secondaryColor: _secondaryColor,
+                                  tertiaryColor: _tertiaryColor,
+                                  size: _selectedSize,
+                                  durationMs: _durationMs,
                                 ),
                               ),
                             ),
@@ -130,13 +214,14 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
                               title: 'Particle Vortex Loader',
                               description:
                                   'Mesmerizing particles flowing in a vortex pattern',
-                              loader: const ParticleVortexLoader(
+                              loader: ParticleVortexLoader(
+                                controller: _controller,
                                 options: LoaderOptions(
-                                  color: Colors.deepOrange,
-                                  secondaryColor: Colors.amber,
-                                  tertiaryColor: Colors.redAccent,
-                                  size: LoaderSize.large,
-                                  durationMs: 3500,
+                                  color: _primaryColor,
+                                  secondaryColor: _secondaryColor,
+                                  tertiaryColor: _tertiaryColor,
+                                  size: _selectedSize,
+                                  durationMs: _durationMs,
                                 ),
                               ),
                             ),
@@ -157,12 +242,38 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
                               title: 'Fractal Tree Loader',
                               description:
                                   'A beautiful animated fractal tree inspired by nature',
-                              loader: const FractalTreeLoader(
+                              loader: FractalTreeLoader(
+                                controller: _controller,
                                 options: LoaderOptions(
-                                  color: Colors.green,
-                                  secondaryColor: Colors.lightGreenAccent,
-                                  size: LoaderSize.large,
-                                  durationMs: 5000,
+                                  color: _primaryColor,
+                                  secondaryColor: _secondaryColor,
+                                  size: _selectedSize,
+                                  durationMs: _durationMs,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 32),
+                            _buildCustomizationSection(),
+                          ],
+                        ),
+                      ),
+                    ), // Liquid Blob tab content
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0),
+                        child: Column(
+                          children: [
+                            _buildSection(
+                              title: 'Liquid Blob Loader',
+                              description:
+                                  'Mesmerizing morphing blob with fluid-like motion',
+                              loader: LiquidBlobLoader(
+                                controller: _controller,
+                                options: LoaderOptions(
+                                  color: _primaryColor,
+                                  secondaryColor: _secondaryColor,
+                                  size: _selectedSize,
+                                  durationMs: _durationMs,
                                 ),
                               ),
                             ),
@@ -173,22 +284,77 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
                       ),
                     ),
 
-                    // Liquid Blob tab content
+                    // Circle tab content
                     SingleChildScrollView(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Column(
                           children: [
                             _buildSection(
-                              title: 'Liquid Blob Loader',
+                              title: 'Circle Loader',
                               description:
-                                  'Mesmerizing morphing blob with fluid-like motion',
-                              loader: const LiquidBlobLoader(
+                                  'A circular progress indicator with smooth animation',
+                              loader: CircleLoader(
+                                controller: _controller,
                                 options: LoaderOptions(
-                                  color: Colors.blueAccent,
-                                  secondaryColor: Colors.cyanAccent,
-                                  size: LoaderSize.large,
-                                  durationMs: 4000,
+                                  color: _primaryColor,
+                                  size: _selectedSize,
+                                  durationMs: _durationMs,
+                                  strokeWidth: _strokeWidth,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 32),
+                            _buildCustomizationSection(),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    // Spinner tab content
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0),
+                        child: Column(
+                          children: [
+                            _buildSection(
+                              title: 'Spinner Loader',
+                              description:
+                                  'A classic spinning circular loader animation',
+                              loader: SpinnerLoader(
+                                controller: _controller,
+                                options: LoaderOptions(
+                                  color: _primaryColor,
+                                  size: _selectedSize,
+                                  durationMs: _durationMs,
+                                  strokeWidth: _strokeWidth,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 32),
+                            _buildCustomizationSection(),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    // Wave tab content
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0),
+                        child: Column(
+                          children: [
+                            _buildSection(
+                              title: 'Wave Loader',
+                              description:
+                                  'Multiple bars animating in a wave-like pattern',
+                              loader: WaveLoader(
+                                controller: _controller,
+                                barCount: 5,
+                                options: LoaderOptions(
+                                  color: _primaryColor,
+                                  size: _selectedSize,
+                                  durationMs: _durationMs,
                                 ),
                               ),
                             ),
@@ -201,6 +367,7 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
                   ],
                 ),
               ),
+              _buildControlPanel(),
             ],
           ),
         ),
@@ -553,6 +720,191 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildControlPanel() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceVariant,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton.filled(
+                onPressed: () {
+                  setState(() {
+                    _isAnimating = !_isAnimating;
+                    if (_isAnimating) {
+                      _controller.start();
+                    } else {
+                      _controller.stop();
+                    }
+                  });
+                },
+                icon: Icon(_isAnimating ? Icons.pause : Icons.play_arrow),
+                tooltip: _isAnimating ? 'Pause' : 'Play',
+              ),
+              IconButton.filled(
+                onPressed: () {
+                  setState(() {
+                    _isAnimating = true;
+                    _controller.reset();
+                    _controller.start();
+                  });
+                },
+                icon: const Icon(Icons.refresh),
+                tooltip: 'Reset',
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Size:'),
+              DropdownButton<LoaderSize>(
+                value: _selectedSize,
+                items:
+                    LoaderSize.values
+                        .where((size) => size != LoaderSize.custom)
+                        .map(
+                          (size) => DropdownMenuItem(
+                            value: size,
+                            child: Text(size.name),
+                          ),
+                        )
+                        .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedSize = value;
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Primary Color:'),
+              DropdownButton<Color>(
+                value: _primaryColor,
+                items: const [
+                  DropdownMenuItem(
+                    value: Colors.deepPurple,
+                    child: Text('Deep Purple'),
+                  ),
+                  DropdownMenuItem(value: Colors.blue, child: Text('Blue')),
+                  DropdownMenuItem(value: Colors.teal, child: Text('Teal')),
+                  DropdownMenuItem(
+                    value: Colors.deepOrange,
+                    child: Text('Deep Orange'),
+                  ),
+                  DropdownMenuItem(value: Colors.green, child: Text('Green')),
+                  DropdownMenuItem(
+                    value: Colors.blueAccent,
+                    child: Text('Blue Accent'),
+                  ),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _primaryColor = value;
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Secondary Color:'),
+              DropdownButton<Color>(
+                value: _secondaryColor,
+                items: const [
+                  DropdownMenuItem(
+                    value: Colors.pinkAccent,
+                    child: Text('Pink Accent'),
+                  ),
+                  DropdownMenuItem(value: Colors.amber, child: Text('Amber')),
+                  DropdownMenuItem(value: Colors.purple, child: Text('Purple')),
+                  DropdownMenuItem(
+                    value: Colors.redAccent,
+                    child: Text('Red Accent'),
+                  ),
+                  DropdownMenuItem(
+                    value: Colors.lightGreenAccent,
+                    child: Text('Light Green Accent'),
+                  ),
+                  DropdownMenuItem(
+                    value: Colors.cyanAccent,
+                    child: Text('Cyan Accent'),
+                  ),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _secondaryColor = value;
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Duration:'),
+              Slider(
+                value: _durationMs.toDouble(),
+                min: 1000,
+                max: 6000,
+                divisions: 10,
+                label: '${_durationMs}ms',
+                onChanged: (value) {
+                  setState(() {
+                    _durationMs = value.toInt();
+                  });
+                },
+              ),
+            ],
+          ), // Add stroke width control for Circle and Spinner loaders
+          if (_currentLoaderType == 'Circle' || _currentLoaderType == 'Spinner')
+            Column(
+              children: [
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Stroke Width:'),
+                    Slider(
+                      value: _strokeWidth,
+                      min: 1.0,
+                      max: 10.0,
+                      divisions: 9,
+                      label: _strokeWidth.toStringAsFixed(1),
+                      onChanged: (value) {
+                        setState(() {
+                          _strokeWidth = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+        ],
+      ),
     );
   }
 }

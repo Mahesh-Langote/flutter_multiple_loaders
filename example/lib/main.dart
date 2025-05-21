@@ -1,6 +1,5 @@
+import 'package:example/unified_loader_showcase.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multiple_loaders/flutter_multiple_loaders.dart';
-import 'innovative_loaders_showcase.dart';
 
 void main() {
   runApp(const ExampleApp());
@@ -38,24 +37,23 @@ class MainScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Choose a Demo',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              'Flutter Multiple Loaders',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'A comprehensive collection of customizable loading animations',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 32),
             _buildNavButton(
               context: context,
-              title: 'Standard Loaders',
-              description: 'Classic loading animations',
-              destination: const LoadersShowcase(),
-              color: Colors.blue,
-            ),
-            const SizedBox(height: 16),
-            _buildNavButton(
-              context: context,
-              title: 'Innovative Loaders',
-              description: 'Unique & creative animations',
-              destination: const InnovativeLoadersShowcase(),
-              color: Colors.purple,
+              title: 'All Loaders',
+              description: 'Explore all loading animations',
+              destination: const UnifiedLoaderShowcaseFixed(),
+              color: Colors.deepPurple,
+              icon: Icons.auto_awesome,
             ),
           ],
         ),
@@ -69,6 +67,7 @@ class MainScreen extends StatelessWidget {
     required String description,
     required Widget destination,
     required Color color,
+    IconData? icon,
   }) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -80,8 +79,8 @@ class MainScreen extends StatelessWidget {
             context,
           ).push(MaterialPageRoute(builder: (context) => destination)),
       child: Container(
-        width: 250,
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        width: 280,
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [color, color.withOpacity(0.7)],
@@ -89,24 +88,40 @@ class MainScreen extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-            const SizedBox(height: 4),
-            Text(
-              description,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.white.withOpacity(0.8),
+          ],
+        ),
+        child: Row(
+          children: [
+            if (icon != null) Icon(icon, color: Colors.white, size: 32),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -115,6 +130,8 @@ class MainScreen extends StatelessWidget {
     );
   }
 }
+
+/*
 
 class LoadersShowcase extends StatefulWidget {
   const LoadersShowcase({super.key});
@@ -379,3 +396,4 @@ class _LoadersShowcaseState extends State<LoadersShowcase> {
     );
   }
 }
+*/
