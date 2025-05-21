@@ -117,7 +117,6 @@ class MainScreen extends StatelessWidget {
                         color: Colors.deepPurple,
                         icon: Icons.auto_awesome,
                       ),
-                      // Add more buttons here for future expansion
                     ],
                   ),
                 ],
