@@ -3,7 +3,19 @@
 https://pub.dev/packages/flutter_multiple_loaders
 
 A Flutter package providing a collection of customizable loading animations for your Flutter applications.
-
+<h3 align="center"><i>Define. Get. Set. Done.</i></h3>
+<p align="center">
+        <img src="https://img.shields.io/codefactor/grade/github/mahesh-langote/flutter_multiple_loaders/main">
+        <img src="https://img.shields.io/github/license/Mahesh-Langote/flutter_multiple_loaders?style=flat-square">
+        <img src="https://img.shields.io/pub/points/flutter_multiple_loaders?style=flat-square">
+        <img src="https://img.shields.io/pub/v/flutter_multiple_loaders?style=flat-square">
+        
+</p>
+<p align="center">
+  <a href="https://buymeacoffee.com/maheshlangote" target="https://buymeacoffee.com/maheshlangote">
+    <img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-Support (:-blue?logo=buymeacoffee&style=flat-square" />
+  </a>
+</p>
 ## Screenshots
 
 Here are examples of the different loaders included in this package:
