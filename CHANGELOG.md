@@ -1,4 +1,4 @@
-## 0.0.7
+## 1.0.0
 
 * Added new standard loader:
   * BlinkingLoader: A customizable shape that fades in and out with adjustable timing
