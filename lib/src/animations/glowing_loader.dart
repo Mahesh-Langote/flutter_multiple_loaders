@@ -101,9 +101,11 @@ class _GlowingLoaderState extends State<GlowingLoader>
   Widget build(BuildContext context) {
     final size = widget.options.size.value;
     final secondaryColor =
-        widget.options.secondaryColor ?? widget.options.color.withOpacity(0.7);
+        widget.options.secondaryColor ??
+        widget.options.color.withValues(alpha: 0.7);
     final tertiaryColor =
-        widget.options.tertiaryColor ?? widget.options.color.withOpacity(0.3);
+        widget.options.tertiaryColor ??
+        widget.options.color.withValues(alpha: 0.3);
 
     return AnimatedBuilder(
       animation: _animationController,

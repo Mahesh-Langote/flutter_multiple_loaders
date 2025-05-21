@@ -419,7 +419,7 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
         Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(12),
           ),
           child: loader,
@@ -679,7 +679,7 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
           width: double.infinity,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Stack(
@@ -727,7 +727,7 @@ class _InnovativeLoadersShowcaseState extends State<InnovativeLoadersShowcase> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: Column(

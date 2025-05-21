@@ -77,7 +77,7 @@ class LoaderControlPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: SingleChildScrollView(
@@ -222,7 +222,7 @@ class LoaderControlPanel extends StatelessWidget {
       'Deep Purple': Colors.deepPurple,
       'Deep Orange': Colors.deepOrange,
     };
-    
+
     // Find the key for the current color
     String currentColorKey = 'Blue';
     for (var entry in primaryColors.entries) {
@@ -231,15 +231,18 @@ class LoaderControlPanel extends StatelessWidget {
         break;
       }
     }
-    
+
     return DropdownButton<String>(
       value: currentColorKey,
-      items: primaryColors.entries
-          .map((entry) => DropdownMenuItem<String>(
-                value: entry.key,
-                child: Text(entry.key),
-              ))
-          .toList(),
+      items:
+          primaryColors.entries
+              .map(
+                (entry) => DropdownMenuItem<String>(
+                  value: entry.key,
+                  child: Text(entry.key),
+                ),
+              )
+              .toList(),
       onChanged: (value) {
         if (value != null && primaryColors.containsKey(value)) {
           onPrimaryColorChanged(primaryColors[value]!);
@@ -259,7 +262,7 @@ class LoaderControlPanel extends StatelessWidget {
       'Orange': Colors.orangeAccent,
       'Blue': Colors.blue,
     };
-    
+
     // Find the key for the current color or use default
     String currentColorKey = 'Pink';
     if (secondaryColor != null) {
@@ -270,15 +273,18 @@ class LoaderControlPanel extends StatelessWidget {
         }
       }
     }
-    
+
     return DropdownButton<String>(
       value: currentColorKey,
-      items: secondaryColors.entries
-          .map((entry) => DropdownMenuItem<String>(
-                value: entry.key,
-                child: Text(entry.key),
-              ))
-          .toList(),
+      items:
+          secondaryColors.entries
+              .map(
+                (entry) => DropdownMenuItem<String>(
+                  value: entry.key,
+                  child: Text(entry.key),
+                ),
+              )
+              .toList(),
       onChanged: (value) {
         if (value != null && secondaryColors.containsKey(value)) {
           onSecondaryColorChanged(secondaryColors[value]!);
@@ -296,7 +302,7 @@ class LoaderControlPanel extends StatelessWidget {
       'Deep Orange': Colors.deepOrange,
       'Light Blue': Colors.lightBlueAccent,
     };
-    
+
     // Find the key for the current color or use default
     String currentColorKey = 'White';
     if (tertiaryColor != null) {
@@ -307,15 +313,18 @@ class LoaderControlPanel extends StatelessWidget {
         }
       }
     }
-    
+
     return DropdownButton<String>(
       value: currentColorKey,
-      items: tertiaryColors.entries
-          .map((entry) => DropdownMenuItem<String>(
-                value: entry.key,
-                child: Text(entry.key),
-              ))
-          .toList(),
+      items:
+          tertiaryColors.entries
+              .map(
+                (entry) => DropdownMenuItem<String>(
+                  value: entry.key,
+                  child: Text(entry.key),
+                ),
+              )
+              .toList(),
       onChanged: (value) {
         if (value != null && tertiaryColors.containsKey(value)) {
           onTertiaryColorChanged(tertiaryColors[value]!);

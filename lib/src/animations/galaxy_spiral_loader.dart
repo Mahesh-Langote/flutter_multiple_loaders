@@ -132,7 +132,7 @@ class _GalaxySpiralLoaderState extends State<GalaxySpiralLoader>
               primaryColor: widget.options.color,
               secondaryColor:
                   widget.options.secondaryColor ??
-                  widget.options.color.withOpacity(0.6),
+                  widget.options.color.withValues(alpha: 0.6),
               tertiaryColor: widget.options.tertiaryColor,
               backgroundColor: widget.options.backgroundColor,
               stars: _stars,
@@ -220,8 +220,8 @@ class _GalaxySpiralPainter extends CustomPainter {
           ..style = PaintingStyle.fill
           ..shader = RadialGradient(
             colors: [
-              tertiaryColor ?? primaryColor.withOpacity(0.8 * pulseScale),
-              primaryColor.withOpacity(0.0),
+              tertiaryColor ?? primaryColor.withValues(alpha: 0.8 * pulseScale),
+              primaryColor.withValues(alpha: 0.0),
             ],
             stops: const [0.0, 1.0],
           ).createShader(
@@ -236,8 +236,8 @@ class _GalaxySpiralPainter extends CustomPainter {
     // Draw bright core
     final Paint corePaint =
         Paint()
-          ..color = (tertiaryColor ?? primaryColor).withOpacity(
-            0.9 * pulseScale,
+          ..color = (tertiaryColor ?? primaryColor).withValues(
+            alpha: 0.9 * pulseScale,
           )
           ..style = PaintingStyle.fill
           ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4.0);
@@ -251,7 +251,7 @@ class _GalaxySpiralPainter extends CustomPainter {
     // Draw inner bright core
     final Paint innerCorePaint =
         Paint()
-          ..color = Colors.white.withOpacity(0.9 * pulseScale)
+          ..color = Colors.white.withValues(alpha: 0.9 * pulseScale)
           ..style = PaintingStyle.fill;
 
     canvas.drawCircle(
@@ -295,7 +295,7 @@ class _GalaxySpiralPainter extends CustomPainter {
         primaryColor,
         secondaryColor,
         star.distance,
-      )!.withOpacity(opacity);
+      )!.withValues(alpha: opacity);
 
       // Draw star with glow
       final Paint starPaint =
@@ -313,7 +313,7 @@ class _GalaxySpiralPainter extends CustomPainter {
       // Draw bright center of the star
       final Paint starCenterPaint =
           Paint()
-            ..color = Colors.white.withOpacity(opacity * 0.8)
+            ..color = Colors.white.withValues(alpha: opacity * 0.8)
             ..style = PaintingStyle.fill;
 
       canvas.drawCircle(

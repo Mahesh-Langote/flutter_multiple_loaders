@@ -103,7 +103,7 @@ class _DnaHelixLoaderState extends State<DnaHelixLoader>
               primaryColor: widget.options.color,
               secondaryColor:
                   widget.options.secondaryColor ??
-                  widget.options.color.withOpacity(0.7),
+                  widget.options.color.withValues(alpha: 0.7),
               strokeWidth: widget.options.strokeWidth,
               backgroundColor: widget.options.backgroundColor,
             ),
@@ -166,7 +166,7 @@ class _DnaHelixPainter extends CustomPainter {
     // Paint for the base pairs (rungs)
     final Paint rungPaint =
         Paint()
-          ..color = Colors.white.withOpacity(0.8)
+          ..color = Colors.white.withValues(alpha: 0.8)
           ..style = PaintingStyle.stroke
           ..strokeWidth = strokeWidth * 0.5
           ..strokeCap = StrokeCap.round;

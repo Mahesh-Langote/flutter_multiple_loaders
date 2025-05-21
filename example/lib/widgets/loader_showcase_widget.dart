@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_multiple_loaders/flutter_multiple_loaders.dart';
 
 /// A widget that showcases a single loader with its description and code snippet
 class LoaderShowcaseWidget extends StatelessWidget {
@@ -62,7 +61,7 @@ class LoaderShowcaseWidget extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: .05),
             borderRadius: BorderRadius.circular(12),
           ),
           child: loader,

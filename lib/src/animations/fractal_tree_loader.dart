@@ -102,7 +102,7 @@ class _FractalTreeLoaderState extends State<FractalTreeLoader>
               primaryColor: widget.options.color,
               secondaryColor:
                   widget.options.secondaryColor ??
-                  widget.options.color.withOpacity(0.7),
+                  widget.options.color.withValues(alpha: 0.7),
               strokeWidth: widget.options.strokeWidth,
             ),
             size: Size.square(size),
@@ -153,7 +153,7 @@ class _FractalTreePainter extends CustomPainter {
     // Draw a subtle ground/shadow effect
     final groundPaint =
         Paint()
-          ..color = primaryColor.withOpacity(0.2)
+          ..color = primaryColor.withValues(alpha: 0.2)
           ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10.0);
 
     canvas.drawOval(
@@ -261,7 +261,7 @@ class _FractalTreePainter extends CustomPainter {
     if (currentDepth > maxDepth * 0.5 && currentDepth < effectiveDepth) {
       final leafPaint =
           Paint()
-            ..color = color.withOpacity(0.7)
+            ..color = color.withValues(alpha: 0.7)
             ..style = PaintingStyle.fill;
 
       canvas.drawCircle(

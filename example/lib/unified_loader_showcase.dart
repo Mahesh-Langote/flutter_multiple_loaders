@@ -75,7 +75,7 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
         _selectedLoaderIndex = loaderIndex;
         _primaryColor = loaderInfo.primaryColor;
         _secondaryColor =
-            loaderInfo.secondaryColor ?? _primaryColor.withOpacity(0.7);
+            loaderInfo.secondaryColor ?? _primaryColor.withValues(alpha: 0.7);
         _tertiaryColor = loaderInfo.tertiaryColor ?? Colors.white;
         _durationMs = loaderInfo.durationMs;
         _strokeWidth = loaderInfo.strokeWidth;

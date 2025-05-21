@@ -139,7 +139,10 @@ class _LiquidBlobPainter extends CustomPainter {
     final gradient = RadialGradient(
       center: const Alignment(0.2, -0.2), // Light source position
       radius: 0.9,
-      colors: [secondaryColor.withOpacity(0.9), primaryColor.withOpacity(0.9)],
+      colors: [
+        secondaryColor.withValues(alpha: 0.9),
+        primaryColor.withValues(alpha: 0.9),
+      ],
       stops: const [0.4, 1.0],
     );
 
@@ -165,12 +168,12 @@ class _LiquidBlobPainter extends CustomPainter {
     // Add highlight reflections with varying opacity
     final highlightPaint1 =
         Paint()
-          ..color = Colors.white.withOpacity(0.25)
+          ..color = Colors.white.withValues(alpha: 0.25)
           ..style = PaintingStyle.fill;
 
     final highlightPaint2 =
         Paint()
-          ..color = Colors.white.withOpacity(0.15)
+          ..color = Colors.white.withValues(alpha: 0.15)
           ..style = PaintingStyle.fill;
 
     // Draw two small highlight blobs that move across the surface

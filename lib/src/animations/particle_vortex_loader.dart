@@ -122,10 +122,10 @@ class _ParticleVortexLoaderState extends State<ParticleVortexLoader>
               primaryColor: widget.options.color,
               secondaryColor:
                   widget.options.secondaryColor ??
-                  widget.options.color.withOpacity(0.7),
+                  widget.options.color.withValues(alpha: 0.7),
               tertiaryColor:
                   widget.options.tertiaryColor ??
-                  widget.options.color.withOpacity(0.4),
+                  widget.options.color.withValues(alpha: 0.4),
             ),
             size: Size.square(size),
           );
@@ -199,7 +199,7 @@ class _VortexPainter extends CustomPainter {
       // Draw particle with a tail/streak effect for motion blur
       final tailPaint =
           Paint()
-            ..color = colors[particle.colorIndex].withOpacity(0.3)
+            ..color = colors[particle.colorIndex].withValues(alpha: 0.3)
             ..style = PaintingStyle.stroke
             ..strokeWidth = particle.size * 0.5;
 
@@ -222,7 +222,7 @@ class _VortexPainter extends CustomPainter {
       // Add glow effect
       final glowPaint =
           Paint()
-            ..color = colors[particle.colorIndex].withOpacity(0.2)
+            ..color = colors[particle.colorIndex].withValues(alpha: 0.2)
             ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4.0);
 
       canvas.drawCircle(Offset(x, y), particle.size * 1.8, glowPaint);
@@ -231,7 +231,7 @@ class _VortexPainter extends CustomPainter {
     // Draw center glow effect
     final centerGlowPaint =
         Paint()
-          ..color = primaryColor.withOpacity(0.2)
+          ..color = primaryColor.withValues(alpha: 0.2)
           ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15.0);
 
     canvas.drawCircle(center, radius * 0.2, centerGlowPaint);

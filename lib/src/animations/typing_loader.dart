@@ -168,7 +168,8 @@ class _TypingLoaderState extends State<TypingLoader>
   Widget _buildDot(double size) {
     // Secondary color fallback to a lighter version of the main color
     final secondaryColor =
-        widget.options.secondaryColor ?? widget.options.color.withOpacity(0.7);
+        widget.options.secondaryColor ??
+        widget.options.color.withValues(alpha: .7);
 
     return Container(
       width: size,
@@ -180,7 +181,7 @@ class _TypingLoaderState extends State<TypingLoader>
             widget.options.backgroundColor != null
                 ? [
                   BoxShadow(
-                    color: secondaryColor.withOpacity(0.3),
+                    color: secondaryColor.withValues(alpha: 0.3),
                     blurRadius: 4.0,
                     spreadRadius: 1.0,
                   ),
