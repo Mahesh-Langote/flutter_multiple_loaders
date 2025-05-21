@@ -1,5 +1,7 @@
 # Flutter Multiple Loaders
 
+https://pub.dev/packages/flutter_multiple_loaders
+
 A Flutter package providing a collection of customizable loading animations for your Flutter applications.
 
 ## Screenshots
