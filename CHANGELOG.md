@@ -1,3 +1,8 @@
+## 0.0.5
+
+* Added GlowingLoader animation with pulsing glow effects and gradient colors
+* Added TypingLoader animation simulating typing dots for chat applications 
+
 ## 0.0.4
 
 * Added rotating square and flipping card animation

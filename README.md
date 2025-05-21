@@ -25,6 +25,8 @@ This package includes multiple loading animation styles with customizable proper
 - **Circle Loader**: A circular progress indicator with customizable properties
 - **Dots Loader**: Multiple dots that fade in and out in sequence
 - **Rotating Square Loader**: A square that rotates on its center axis
+- **Glowing Loader**: A circle with pulsing glow effects and gradient colors
+- **Typing Loader**: A typing indicator with animated dots, commonly used in chat applications
 
 All loaders feature:
 - Customizable sizes (extra small to extra large)

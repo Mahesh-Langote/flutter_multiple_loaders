@@ -1,6 +1,6 @@
 name: flutter_multiple_loaders
 description: "A Flutter package providing a collection of customizable loading animations for your Flutter applications."
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/Mahesh-Langote/flutter_multiple_loaders
 repository: https://github.com/Mahesh-Langote/flutter_multiple_loaders
 documentation: https://github.com/Mahesh-Langote/flutter_multiple_loaders/blob/main/README.md

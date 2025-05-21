@@ -44,7 +44,7 @@ class _LoadersShowcaseState extends State<LoadersShowcase> {
       ),
       body: SafeArea(
         child: DefaultTabController(
-          length: 8,
+          length: 10,
           child: Column(
             children: [
               const TabBar(
@@ -58,6 +58,8 @@ class _LoadersShowcaseState extends State<LoadersShowcase> {
                   Tab(text: 'Dots'),
                   Tab(text: 'Square'),
                   Tab(text: 'Flipping Card'),
+                  Tab(text: 'Glowing'),
+                  Tab(text: 'Typing'),
                 ],
               ),
               Expanded(
@@ -112,6 +114,19 @@ class _LoadersShowcaseState extends State<LoadersShowcase> {
                       (options) => FlippingCardLoader(
                         options: options,
                         controller: _controller,
+                      ),
+                    ),
+                    _buildLoaderTab(
+                      (options) => GlowingLoader(
+                        options: options,
+                        controller: _controller,
+                      ),
+                    ),
+                    _buildLoaderTab(
+                      (options) => TypingLoader(
+                        options: options,
+                        controller: _controller,
+                        dotCount: 3,
                       ),
                     ),
                   ],
