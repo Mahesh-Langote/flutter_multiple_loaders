@@ -322,7 +322,7 @@ class LoaderControlPanel extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${strokeWidth!.toStringAsFixed(1)}',
+                          strokeWidth!.toStringAsFixed(1),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
