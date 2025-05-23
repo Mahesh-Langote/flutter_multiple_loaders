@@ -15,18 +15,6 @@ A Flutter package providing a collection of customizable loading animations for 
     <img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-Support (:-blue?logo=buymeacoffee&style=flat-square" />
   </a>
 </p>
-## Screenshots
-
-Here are examples of the different loaders included in this package:
-
-|                  Spinner Loader                   |                 Pulse Loader                  |                  Bounce Loader                  |
-| :-----------------------------------------------: | :-------------------------------------------: | :---------------------------------------------: |
-| ![Spinner Loader](screenshots/spinner_loader.gif) | ![Pulse Loader](screenshots/pulse_loader.gif) | ![Bounce Loader](screenshots/bounce_loader.gif) |
-
-|                 Wave Loader                 |                  Circle Loader                  |                 Dots Loader                 |
-| :-----------------------------------------: | :---------------------------------------------: | :-----------------------------------------: |
-| ![Wave Loader](screenshots/wave_loader.gif) | ![Circle Loader](screenshots/circle_loader.gif) | ![Dots Loader](screenshots/dots_loader.gif) |
-
 ## Features
 
 This package includes multiple loading animation styles with customizable properties:
@@ -50,6 +38,7 @@ This package includes multiple loading animation styles with customizable proper
 - **Particle Vortex Loader**: Mesmerizing particles flowing in a vortex pattern with customizable flow speed and colors
 - **Fractal Tree Loader**: A beautiful animated fractal tree that grows and branches organically
 - **Liquid Blob Loader**: A morphing liquid-like blob with fluid motion and realistic highlights
+- **Page Turning Loader**: A book with smoothly turning pages that simulates a realistic reading animation with enhanced 3D perspective, dynamic shadows, natural page bending, and realistic content visualization
 
 All loaders feature:
 
@@ -58,6 +47,27 @@ All loaders feature:
 - Adjustable animation speed
 - Optional background colors
 - Animation control (start, stop, reset)
+
+## Screenshots
+
+### Standard Loaders
+
+| Loader | Preview | Loader | Preview |
+|--------|---------|--------|---------|
+| **Spinner Loader** | <img src="screenshots/SpinnerLoader.gif"  alt="Spinner Loader"> | **Pulse Loader** | <img src="screenshots/PulseLoader.gif"  alt="Pulse Loader"> |
+| **Bounce Loader** | <img src="screenshots/BounceLoader.gif"  alt="Bounce Loader"> | **Wave Loader** | <img src="screenshots/WaveLoader.gif"  alt="Wave Loader"> |
+| **Circle Loader** | <img src="screenshots/CircleLoader.gif"  alt="Circle Loader"> | **Dots Loader** | <img src="screenshots/DotsLoader.gif"  alt="Dots Loader"> |
+| **Rotating Square Loader** | <img src="screenshots/RotatingSquareLoader.gif"  alt="Rotating Square Loader"> | **Glowing Loader** | <img src="screenshots/GlowingLoader.gif"  alt="Glowing Loader"> |
+| **Typing Loader** | <img src="screenshots/TypingLoader.gif"  alt="Typing Loader"> |  |  |
+
+### Innovative Loaders Gallery
+
+| Loader | Preview | Loader | Preview |
+|--------|---------|--------|---------|
+| **DNA Helix Loader** | <img src="screenshots/DnaHelixLoader.gif"  alt="DNA Helix Loader"> | **Morphing Shape Loader** | <img src="screenshots/MorphingShapeLoader.gif"  alt="Morphing Shape Loader"> |
+| **Galaxy Spiral Loader** | <img src="screenshots/GalaxySpiralLoader.gif"  alt="Galaxy Spiral Loader"> | **Particle Vortex Loader** | <img src="screenshots/ParticleVortexLoader.gif"  alt="Particle Vortex Loader"> |
+| **Fractal Tree Loader** | <img src="screenshots/FractalTreeLoader.gif"  alt="Fractal Tree Loader"> | **Liquid Blob Loader** | <img src="screenshots/LiquidBlobLoader.gif"  alt="Liquid Blob Loader"> |
+| **Flipping Card Loader** | <img src="screenshots/FlippingCardLoader.gif"  alt="Flipping Card Loader"> |  |  |
 
 ## Getting started
 
@@ -104,6 +114,19 @@ CircleLoader();
 
 // Blinking animation with different shapes
 BlinkingLoader();  // default is circle
+
+// Book animations
+PageTurningLoader(
+  pageCount: 20,  // Number of pages in the book
+  options: LoaderOptions(
+    color: Colors.indigo,        // Cover color
+    secondaryColor: Colors.indigoAccent,  // Text/content color
+    tertiaryColor: Colors.white, // Page color
+    durationMs: 3500,            // Animation duration
+  ),
+); 
+
+// Shape animations
 BlinkingLoader(shape: BlinkingShape.square);
 BlinkingLoader(shape: BlinkingShape.triangle);
 BlinkingLoader(shape: BlinkingShape.star);

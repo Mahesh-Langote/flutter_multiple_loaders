@@ -25,6 +25,7 @@ export 'src/animations/galaxy_spiral_loader.dart';
 export 'src/animations/particle_vortex_loader.dart';
 export 'src/animations/fractal_tree_loader.dart';
 export 'src/animations/liquid_blob_loader.dart';
+export 'src/animations/page_turning_loader.dart';
 
 // Export utility classes
 export 'src/utils/loader_size.dart';

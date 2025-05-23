@@ -1,3 +1,12 @@
+ 
+## 1.0.1
+
+* Added new innovative loader:
+  * PageTurningLoader: A book with smoothly turning pages that simulates a realistic reading animation
+  * Features realistic page turning physics, shadows, and text line visualizations
+  * Customizable page count and turning speed
+* Updated documentation to include the new PageTurningLoader
+
 ## 1.0.0
 
 * Added new standard loader:
