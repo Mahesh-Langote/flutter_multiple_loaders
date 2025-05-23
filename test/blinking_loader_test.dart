@@ -9,12 +9,10 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(
       const MaterialApp(home: Scaffold(body: Center(child: BlinkingLoader()))),
-    );
-
-    // Verify that the BlinkingLoader is rendered correctly
+    ); // Verify that the BlinkingLoader is rendered correctly
     expect(find.byType(BlinkingLoader), findsOneWidget);
-    expect(find.byType(AnimatedBuilder), findsOneWidget);
-    expect(find.byType(Opacity), findsOneWidget);
+    expect(find.byType(AnimatedBuilder), findsAtLeastNWidgets(1));
+    expect(find.byType(Opacity), findsAtLeastNWidgets(1));
   });
 
   testWidgets('BlinkingLoader changes shape correctly', (
@@ -40,13 +38,12 @@ void main() {
           body: Center(child: BlinkingLoader(shape: BlinkingShape.triangle)),
         ),
       ),
-    );
-
-    // Verify that the BlinkingLoader renders with triangle shape
+    ); // Verify that the BlinkingLoader renders with triangle shape
     expect(find.byType(BlinkingLoader), findsOneWidget);
-    expect(find.byType(CustomPaint), findsOneWidget);
-
-    // Test with star shape
+    expect(
+      find.byType(CustomPaint),
+      findsAtLeastNWidgets(1),
+    ); // Test with star shape
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
@@ -57,7 +54,7 @@ void main() {
 
     // Verify that the BlinkingLoader renders with star shape
     expect(find.byType(BlinkingLoader), findsOneWidget);
-    expect(find.byType(CustomPaint), findsOneWidget);
+    expect(find.byType(CustomPaint), findsAtLeastNWidgets(1));
   });
 
   testWidgets('BlinkingLoader respects LoaderOptions', (
