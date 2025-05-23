@@ -144,6 +144,34 @@ LiquidBlobLoader(
 )
 ```
 
+### Page Turning Loader
+
+The Page Turning Loader displays a realistic book with smoothly turning pages, creating an immersive reading animation effect.
+
+**Features:**
+- Enhanced 3D perspective with realistic page turning physics
+- Dynamic shadows that adjust based on page position and lighting
+- Natural page bending and curvature effects during turns
+- Realistic page content visualization with text line patterns
+- Book cover with texture and spine details
+- Customizable page count, colors, and turning speed
+- Smooth animation sequence with natural pauses and easing curves
+
+**Example Usage:**
+```dart
+PageTurningLoader(
+  pageCount: 20,  // Number of pages in the book
+  options: LoaderOptions(
+    color: Colors.indigo,        // Cover color
+    secondaryColor: Colors.indigoAccent,  // Text/content color
+    tertiaryColor: Colors.white, // Page color
+    size: LoaderSize.large,
+    durationMs: 3500,            // Total animation duration
+  ),
+)
+```
+ 
+
 ## Common Customization Options
 
 All innovative loaders can be customized using the `LoaderOptions` class, which provides the following options:

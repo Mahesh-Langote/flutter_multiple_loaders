@@ -192,17 +192,16 @@ class LoaderCategoryManager {
       LoaderCategory(
         name: 'Innovative',
         loaders: [
-          /*LoaderInfo(
+          LoaderInfo(
             name: 'DNAHelix',
             description: 'An animated double helix structure',
             primaryColor: Colors.deepPurple,
             secondaryColor: Colors.pinkAccent,
             durationMs: 3000,
-            createLoader: (options, controller) => DNAHelixLoader(
-              options: options,
-              controller: controller,
-            ),
-          ),*/
+            createLoader:
+                (options, controller) =>
+                    DnaHelixLoader(options: options, controller: controller),
+          ),
           LoaderInfo(
             name: 'MorphingShape',
             description: 'A shape that smoothly transforms',
@@ -261,6 +260,20 @@ class LoaderCategoryManager {
             createLoader:
                 (options, controller) =>
                     LiquidBlobLoader(options: options, controller: controller),
+          ),
+          LoaderInfo(
+            name: 'PageTurning',
+            description: 'A book with turning pages',
+            primaryColor: Colors.indigo,
+            secondaryColor: Colors.indigoAccent,
+            tertiaryColor: Colors.white,
+            durationMs: 3500,
+            createLoader:
+                (options, controller) => PageTurningLoader(
+                  options: options,
+                  controller: controller,
+                  pageCount: 20,
+                ),
           ),
         ],
       ),
