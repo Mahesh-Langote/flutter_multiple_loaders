@@ -51,21 +51,19 @@ class _PageTurningLoaderState extends State<PageTurningLoader>
       duration: const Duration(milliseconds: 1000),
     );
 
-    _pageFlipAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _pageController,
-      curve: const Interval(0.0, 0.8, curve: Curves.easeInOutCubic),
-    ));
+    _pageFlipAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _pageController,
+        curve: const Interval(0.0, 0.8, curve: Curves.easeInOutCubic),
+      ),
+    );
 
-    _curlAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _pageController,
-      curve: const Interval(0.0, 0.4, curve: Curves.easeOutCubic),
-    ));
+    _curlAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _pageController,
+        curve: const Interval(0.0, 0.4, curve: Curves.easeOutCubic),
+      ),
+    );
 
     _loaderController = widget.controller ?? LoaderController();
     _loaderController.initialize(_mainController);
@@ -138,7 +136,7 @@ class _PageTurningLoaderState extends State<PageTurningLoader>
     final bookWidth = size * 1.6;
     final bookHeight = size;
 
-    return Container(
+    return SizedBox(
       width: bookWidth,
       height: bookHeight,
       child: AnimatedBuilder(
@@ -153,8 +151,9 @@ class _PageTurningLoaderState extends State<PageTurningLoader>
               isFlipping: _isFlipping,
               pageCount: widget.pageCount,
               color: widget.options.color,
-              secondaryColor: widget.options.secondaryColor ??
-                  widget.options.color.withOpacity(0.7),
+              secondaryColor:
+                  widget.options.secondaryColor ??
+                  widget.options.color.withValues(alpha: 0.7),
               backgroundColor: widget.options.tertiaryColor ?? Colors.white,
             ),
           );
@@ -216,7 +215,7 @@ class _RealisticPageFlipPainter extends CustomPainter {
       const Radius.circular(6),
     );
 
-    paint.color = color.withOpacity(0.9);
+    paint.color = color.withValues(alpha: 0.9);
     canvas.drawRRect(coverRect, paint);
 
     // Cover texture
@@ -224,9 +223,9 @@ class _RealisticPageFlipPainter extends CustomPainter {
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        color.withOpacity(0.8),
+        color.withValues(alpha: 0.8),
         color,
-        color.withOpacity(0.95),
+        color.withValues(alpha: 0.95),
       ],
     );
 
@@ -257,9 +256,10 @@ class _RealisticPageFlipPainter extends CustomPainter {
 
       // Page shadow for depth
       if (i > 0) {
-        final shadowPaint = Paint()
-          ..color = Colors.black.withOpacity(0.05)
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1);
+        final shadowPaint =
+            Paint()
+              ..color = Colors.black.withValues(alpha: 0.05)
+              ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1);
 
         canvas.drawRRect(
           RRect.fromRectAndRadius(
@@ -276,7 +276,7 @@ class _RealisticPageFlipPainter extends CustomPainter {
         // Top page is slightly brighter
         paint.color = backgroundColor;
       } else {
-        paint.color = backgroundColor.withOpacity(0.95);
+        paint.color = backgroundColor.withValues(alpha: 0.95);
       }
 
       canvas.drawRRect(
@@ -291,9 +291,10 @@ class _RealisticPageFlipPainter extends CustomPainter {
 
       // Page edge lines for thickness effect
       if (i < leftPages.length - 1) {
-        final edgePaint = Paint()
-          ..color = Colors.grey.withOpacity(0.2)
-          ..strokeWidth = 0.5;
+        final edgePaint =
+            Paint()
+              ..color = Colors.grey.withValues(alpha: 0.2)
+              ..strokeWidth = 0.5;
 
         canvas.drawLine(
           Offset(pageRect.right, pageRect.top),
@@ -327,9 +328,10 @@ class _RealisticPageFlipPainter extends CustomPainter {
 
       // Page shadow for depth
       if (i < rightPages.length - 1) {
-        final shadowPaint = Paint()
-          ..color = Colors.black.withOpacity(0.05)
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1);
+        final shadowPaint =
+            Paint()
+              ..color = Colors.black.withValues(alpha: 0.05)
+              ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1);
 
         canvas.drawRRect(
           RRect.fromRectAndRadius(
@@ -345,7 +347,7 @@ class _RealisticPageFlipPainter extends CustomPainter {
       if (i == rightPages.length - 1) {
         paint.color = backgroundColor;
       } else {
-        paint.color = backgroundColor.withOpacity(0.95);
+        paint.color = backgroundColor.withValues(alpha: 0.95);
       }
 
       canvas.drawRRect(
@@ -360,9 +362,10 @@ class _RealisticPageFlipPainter extends CustomPainter {
 
       // Page edge lines
       if (i < rightPages.length - 1) {
-        final edgePaint = Paint()
-          ..color = Colors.grey.withOpacity(0.2)
-          ..strokeWidth = 0.5;
+        final edgePaint =
+            Paint()
+              ..color = Colors.grey.withValues(alpha: 0.2)
+              ..strokeWidth = 0.5;
 
         canvas.drawLine(
           Offset(pageRect.left, pageRect.top),
@@ -411,9 +414,13 @@ class _RealisticPageFlipPainter extends CustomPainter {
     // Draw page shadow during flip
     final shadowIntensity = 0.4 * math.sin(rotationAngle);
     if (shadowIntensity > 0) {
-      final shadowPaint = Paint()
-        ..color = Colors.black.withOpacity(shadowIntensity)
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, 6 + 4 * flipProgress);
+      final shadowPaint =
+          Paint()
+            ..color = Colors.black.withValues(alpha: shadowIntensity)
+            ..maskFilter = MaskFilter.blur(
+              BlurStyle.normal,
+              6 + 4 * flipProgress,
+            );
 
       final shadowOffset = Offset(
         3 * math.sin(rotationAngle),
@@ -453,15 +460,20 @@ class _RealisticPageFlipPainter extends CustomPainter {
       // When more than halfway flipped, show the back side
       canvas.scale(-1, 1);
     }
-    _drawPageContent(canvas, pageRect, flippingPageIndex,
-        isLeftPage: flipProgress > 0.5);
+    _drawPageContent(
+      canvas,
+      pageRect,
+      flippingPageIndex,
+      isLeftPage: flipProgress > 0.5,
+    );
     canvas.restore();
 
     // Draw page curl highlight
     if (curlIntensity > 0.1) {
-      final curlPaint = Paint()
-        ..color = Colors.white.withOpacity(0.6 * curlIntensity)
-        ..style = PaintingStyle.fill;
+      final curlPaint =
+          Paint()
+            ..color = Colors.white.withValues(alpha: 0.6 * curlIntensity)
+            ..style = PaintingStyle.fill;
 
       final curlPath = Path();
       curlPath.moveTo(pageRect.right - curlWidth, pageRect.top);
@@ -482,9 +494,10 @@ class _RealisticPageFlipPainter extends CustomPainter {
       canvas.drawPath(curlPath, curlPaint);
 
       // Curl shadow
-      final curlShadowPaint = Paint()
-        ..color = Colors.black.withOpacity(0.2 * curlIntensity)
-        ..style = PaintingStyle.fill;
+      final curlShadowPaint =
+          Paint()
+            ..color = Colors.black.withValues(alpha: 0.2 * curlIntensity)
+            ..style = PaintingStyle.fill;
 
       final shadowPath = Path();
       shadowPath.addPath(curlPath, Offset(1, 1));
@@ -494,11 +507,16 @@ class _RealisticPageFlipPainter extends CustomPainter {
     canvas.restore();
   }
 
-  void _drawPageContent(Canvas canvas, Rect pageRect, int pageIndex,
-      {required bool isLeftPage}) {
-    final contentPaint = Paint()
-      ..color = secondaryColor.withOpacity(0.8)
-      ..strokeWidth = 0.8;
+  void _drawPageContent(
+    Canvas canvas,
+    Rect pageRect,
+    int pageIndex, {
+    required bool isLeftPage,
+  }) {
+    final contentPaint =
+        Paint()
+          ..color = secondaryColor.withValues(alpha: 0.8)
+          ..strokeWidth = 0.8;
 
     // Adjust content area based on page side
     final contentRect = Rect.fromLTWH(
@@ -509,14 +527,16 @@ class _RealisticPageFlipPainter extends CustomPainter {
     );
 
     // Page number
-    final pageNumberPaint = Paint()
-      ..color = secondaryColor.withOpacity(0.6)
-      ..strokeWidth = 0.6;
+    final pageNumberPaint =
+        Paint()
+          ..color = secondaryColor.withValues(alpha: 0.6)
+          ..strokeWidth = 0.6;
 
     final pageNumY = pageRect.bottom - pageRect.height * 0.05;
-    final pageNumX = isLeftPage
-        ? contentRect.left
-        : contentRect.right - pageRect.width * 0.1;
+    final pageNumX =
+        isLeftPage
+            ? contentRect.left
+            : contentRect.right - pageRect.width * 0.1;
 
     canvas.drawLine(
       Offset(pageNumX, pageNumY),
@@ -555,11 +575,7 @@ class _RealisticPageFlipPainter extends CustomPainter {
       final startX = contentRect.left;
       final endX = startX + lineWidth;
 
-      canvas.drawLine(
-        Offset(startX, y),
-        Offset(endX, y),
-        contentPaint,
-      );
+      canvas.drawLine(Offset(startX, y), Offset(endX, y), contentPaint);
     }
 
     // Add a simple diagram or image placeholder on some pages
@@ -571,10 +587,11 @@ class _RealisticPageFlipPainter extends CustomPainter {
         contentRect.height * 0.15,
       );
 
-      final diagramPaint = Paint()
-        ..color = secondaryColor.withOpacity(0.2)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.0;
+      final diagramPaint =
+          Paint()
+            ..color = secondaryColor.withValues(alpha: 0.2)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 1.0;
 
       canvas.drawRRect(
         RRect.fromRectAndRadius(diagramRect, const Radius.circular(4)),
@@ -583,8 +600,14 @@ class _RealisticPageFlipPainter extends CustomPainter {
 
       // Simple diagram content
       canvas.drawLine(
-        Offset(diagramRect.left + diagramRect.width * 0.2, diagramRect.center.dy),
-        Offset(diagramRect.right - diagramRect.width * 0.2, diagramRect.center.dy),
+        Offset(
+          diagramRect.left + diagramRect.width * 0.2,
+          diagramRect.center.dy,
+        ),
+        Offset(
+          diagramRect.right - diagramRect.width * 0.2,
+          diagramRect.center.dy,
+        ),
         diagramPaint,
       );
     }
@@ -603,11 +626,11 @@ class _RealisticPageFlipPainter extends CustomPainter {
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
       colors: [
-        color.withOpacity(0.7),
-        color.withOpacity(0.9),
+        color.withValues(alpha: 0.7),
+        color.withValues(alpha: 0.9),
         color,
-        color.withOpacity(0.9),
-        color.withOpacity(0.7),
+        color.withValues(alpha: 0.9),
+        color.withValues(alpha: 0.7),
       ],
     );
 
@@ -616,9 +639,10 @@ class _RealisticPageFlipPainter extends CustomPainter {
     paint.shader = null;
 
     // Binding stitches
-    final stitchPaint = Paint()
-      ..color = color.withOpacity(0.5)
-      ..strokeWidth = 0.8;
+    final stitchPaint =
+        Paint()
+          ..color = color.withValues(alpha: 0.5)
+          ..strokeWidth = 0.8;
 
     for (int i = 1; i < 12; i++) {
       final y = size.height * (i / 12);
@@ -630,9 +654,10 @@ class _RealisticPageFlipPainter extends CustomPainter {
     }
 
     // Book edge highlights
-    final edgeHighlight = Paint()
-      ..color = Colors.white.withOpacity(0.15)
-      ..strokeWidth = 1.0;
+    final edgeHighlight =
+        Paint()
+          ..color = Colors.white.withValues(alpha: 0.15)
+          ..strokeWidth = 1.0;
 
     // Left edge
     canvas.drawLine(
@@ -652,10 +677,10 @@ class _RealisticPageFlipPainter extends CustomPainter {
   @override
   bool shouldRepaint(_RealisticPageFlipPainter oldDelegate) =>
       !_listEquals(leftPages, oldDelegate.leftPages) ||
-          !_listEquals(rightPages, oldDelegate.rightPages) ||
-          flipProgress != oldDelegate.flipProgress ||
-          curlProgress != oldDelegate.curlProgress ||
-          isFlipping != oldDelegate.isFlipping;
+      !_listEquals(rightPages, oldDelegate.rightPages) ||
+      flipProgress != oldDelegate.flipProgress ||
+      curlProgress != oldDelegate.curlProgress ||
+      isFlipping != oldDelegate.isFlipping;
 
   bool _listEquals<T>(List<T> a, List<T> b) {
     if (a.length != b.length) return false;
