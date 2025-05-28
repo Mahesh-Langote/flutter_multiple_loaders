@@ -17,6 +17,11 @@ A Flutter package providing a collection of customizable loading animations for 
     <img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-Support (:-blue?logo=buymeacoffee&style=flat-square" />
   </a>
 </p>
+
+## 🌐 Live Demo
+
+Experience all the loaders in action: **[Flutter Multiple Loaders Demo](https://flutter-multiple-loaders.vercel.app/)**
+
 ## Features
 
 This package includes multiple loading animation styles with customizable properties:
@@ -31,6 +36,7 @@ This package includes multiple loading animation styles with customizable proper
 - **Glowing Loader**: A circle with pulsing glow effects and gradient colors
 - **Typing Loader**: A typing indicator with animated dots, commonly used in chat applications
 - **Blinking Loader**: A shape (circle, square, triangle, or star) that fades in and out
+- **Ripple Loader**: Concentric circles that expand outward like ripples on water with customizable ripple count
 
 ### Innovative Loaders
 
@@ -41,6 +47,7 @@ This package includes multiple loading animation styles with customizable proper
 - **Fractal Tree Loader**: A beautiful animated fractal tree that grows and branches organically
 - **Liquid Blob Loader**: A morphing liquid-like blob with fluid motion and realistic highlights
 - **Page Turning Loader**: A book with smoothly turning pages that simulates a realistic reading animation with enhanced 3D perspective, dynamic shadows, natural page bending, and realistic content visualization
+- **Heartbeat Loader**: A realistic anatomical heart animation with authentic cardiac rhythm patterns, blood flow simulation, EKG-style pulse lines, and enhanced visual effects including systole/diastole phases
 
 All loaders feature:
 
@@ -60,7 +67,9 @@ All loaders feature:
 | **Bounce Loader** | <img src="screenshots/BounceLoader.gif"  alt="Bounce Loader"> | **Wave Loader** | <img src="screenshots/WaveLoader.gif"  alt="Wave Loader"> |
 | **Circle Loader** | <img src="screenshots/CircleLoader.gif"  alt="Circle Loader"> | **Dots Loader** | <img src="screenshots/DotsLoader.gif"  alt="Dots Loader"> |
 | **Rotating Square Loader** | <img src="screenshots/RotatingSquareLoader.gif"  alt="Rotating Square Loader"> | **Glowing Loader** | <img src="screenshots/GlowingLoader.gif"  alt="Glowing Loader"> |
-| **Typing Loader** | <img src="screenshots/TypingLoader.gif"  alt="Typing Loader"> |  |  |
+| **Typing Loader** | <img src="screenshots/TypingLoader.gif"  alt="Typing Loader"> | **Ripple Loader** | <img src="screenshots/rippleAnimation.gif"  alt="Ripple Loader"> |
+| **HeartBeat Loader** | <img src="screenshots/heartAnimation.gif"  alt="Typing Loader"> | ** ** |   |
+
 
 ### Innovative Loaders Gallery
 
@@ -69,7 +78,7 @@ All loaders feature:
 | **DNA Helix Loader** | <img src="screenshots/DnaHelixLoader.gif"  alt="DNA Helix Loader"> | **Morphing Shape Loader** | <img src="screenshots/MorphingShapeLoader.gif"  alt="Morphing Shape Loader"> |
 | **Galaxy Spiral Loader** | <img src="screenshots/GalaxySpiralLoader.gif"  alt="Galaxy Spiral Loader"> | **Particle Vortex Loader** | <img src="screenshots/ParticleVortexLoader.gif"  alt="Particle Vortex Loader"> |
 | **Fractal Tree Loader** | <img src="screenshots/FractalTreeLoader.gif"  alt="Fractal Tree Loader"> | **Liquid Blob Loader** | <img src="screenshots/LiquidBlobLoader.gif"  alt="Liquid Blob Loader"> |
-| **Flipping Card Loader** | <img src="screenshots/FlippingCardLoader.gif"  alt="Flipping Card Loader"> |  |  |
+| **Flipping Card Loader** | <img src="screenshots/FlippingCardLoader.gif"  alt="Flipping Card Loader"> |   |
 
 ## Getting started
 
@@ -128,6 +137,18 @@ PageTurningLoader(
   ),
 ); 
 
+// Heartbeat animations
+HeartbeatLoader(
+  pulseIntensity: 0.4,        // Intensity of the heartbeat pulse (0.1 to 1.0)
+  showBloodFlow: true,        // Show blood flow animation inside the heart
+  showPulseLines: false,      // Show EKG-style pulse lines
+  options: LoaderOptions(
+    color: Colors.red,         // Heart color
+    size: LoaderSize.large,    // Heart size
+    durationMs: 2000,          // Heartbeat cycle duration
+  ),
+);
+
 // Shape animations
 BlinkingLoader(shape: BlinkingShape.square);
 BlinkingLoader(shape: BlinkingShape.triangle);
@@ -135,6 +156,17 @@ BlinkingLoader(shape: BlinkingShape.star);
 
 // Dots animation
 DotsLoader();
+
+// Ripple animation
+RippleLoader(
+  rippleCount: 4,              // Number of ripple circles
+  options: LoaderOptions(
+    color: Colors.cyan,        // Ripple color
+    strokeWidth: 3.0,          // Thickness of ripple circles
+    size: LoaderSize.large,    // Overall size
+    durationMs: 2500,          // Animation duration
+  ),
+);
 ```
 
 ### Customizing Loaders

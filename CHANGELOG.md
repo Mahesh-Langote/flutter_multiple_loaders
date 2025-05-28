@@ -1,4 +1,14 @@
  
+## 1.0.2
+
+* Added new innovative loaders:
+  * HeartbeatLoader: A realistic anatomical heart animation with authentic cardiac rhythm patterns
+  * RippleLoader: Concentric circles that expand outward like ripples on water with customizable ripple count
+  * Features realistic cardiac rhythm with systole and diastole phases, anatomically correct heart shape
+  * RippleLoader includes smooth expanding animation with fade-out effect and customizable ripple count
+* Updated documentation to include both new loaders
+* Enhanced example app to showcase the HeartbeatLoader and RippleLoader animations
+
 ## 1.0.1
 
 * Added new innovative loader:

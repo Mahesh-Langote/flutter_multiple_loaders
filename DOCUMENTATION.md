@@ -150,6 +150,48 @@ TypingLoader(
 )
 ```
 
+### HeartbeatLoader
+
+A realistic anatomical heart animation with authentic cardiac rhythm patterns.
+
+```dart
+HeartbeatLoader(
+  pulseIntensity: 0.4, // Intensity of the heartbeat pulse (0.1 to 1.0)
+  options: LoaderOptions(
+    color: Colors.red, // Heart color
+    size: LoaderSize.large,
+    durationMs: 2000, // Heartbeat cycle duration
+  ),
+)
+```
+
+**Features:**
+- Realistic cardiac rhythm with systole and diastole phases
+- Anatomically correct heart shape with chambers and vessels
+- Customizable pulse intensity and visual effects
+
+### RippleLoader
+
+Concentric circles that expand outward like ripples on water.
+
+```dart
+RippleLoader(
+  rippleCount: 4, // Number of ripple circles
+  options: LoaderOptions(
+    color: Colors.cyan, // Ripple color
+    strokeWidth: 3.0, // Thickness of ripple circles
+    size: LoaderSize.large,
+    durationMs: 2500, // Animation duration
+  ),
+)
+```
+
+**Features:**
+- Multiple concentric ripple circles
+- Smooth expanding animation with fade-out effect
+- Customizable ripple count and stroke width
+- Water-like ripple effect simulation
+
 ## Customization Options
 
 All loaders accept a `LoaderOptions` object that allows customization:
