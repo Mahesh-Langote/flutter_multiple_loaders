@@ -46,9 +46,36 @@ void main() {
       const MaterialApp(
         home: Scaffold(body: Center(child: BounceLoader(dotCount: 5))),
       ),
-    );
-
-    // Verify the BounceLoader is rendered
+    ); // Verify the BounceLoader is rendered
     expect(find.byType(BounceLoader), findsOneWidget);
+  });
+
+  testWidgets('HeartbeatLoader creates and displays correctly', (
+    WidgetTester tester,
+  ) async {
+    // Build our widget
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: HeartbeatLoader(
+              options: LoaderOptions(
+                color: Colors.red,
+                size: LoaderSize.medium,
+                durationMs: 2500,
+              ),
+              pulseIntensity: 0.3,
+            ),
+          ),
+        ),
+      ),
+    ); // Verify that the HeartbeatLoader is rendered
+    expect(find.byType(HeartbeatLoader), findsOneWidget);
+
+    // Verify that AnimatedBuilder is present
+    expect(find.byType(AnimatedBuilder), findsWidgets);
+
+    // Verify that CustomPaint is present (for the heart shape)
+    expect(find.byType(CustomPaint), findsWidgets);
   });
 }

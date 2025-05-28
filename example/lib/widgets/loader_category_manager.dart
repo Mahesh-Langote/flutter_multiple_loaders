@@ -187,6 +187,35 @@ class LoaderCategoryManager {
                   shape: BlinkingShape.circle,
                 ),
           ),
+          LoaderInfo(
+            name: 'Ripple',
+            description: 'Concentric circles expanding like water ripples',
+            primaryColor: Colors.cyan,
+            durationMs: 2000,
+            usesStrokeWidth: true,
+            strokeWidth: 3.0,
+            createLoader:
+                (options, controller) => RippleLoader(
+                  options: options,
+                  controller: controller,
+                  rippleCount: 3,
+                ),
+          ),
+          LoaderInfo(
+            name: 'Heartbeat',
+            description:
+                'A pulsing heart shape with realistic heartbeat rhythm',
+            primaryColor: Colors.red,
+            durationMs: 2500,
+            usesStrokeWidth: true,
+            strokeWidth: 2.0,
+            createLoader:
+                (options, controller) => HeartbeatLoader(
+                  options: options,
+                  controller: controller,
+                  pulseIntensity: 0.3,
+                ),
+          ),
         ],
       ),
       LoaderCategory(
