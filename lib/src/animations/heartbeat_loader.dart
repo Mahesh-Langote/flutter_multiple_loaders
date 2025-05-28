@@ -246,7 +246,7 @@ class _HeartPainter extends CustomPainter {
     if (strokeWidth > 0) {
       final glowPaint =
           Paint()
-            ..color = color.withOpacity(0.3)
+            ..color = color.withValues(alpha: 0.3)
             ..style = PaintingStyle.stroke
             ..strokeWidth = strokeWidth * 2
             ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 3);
