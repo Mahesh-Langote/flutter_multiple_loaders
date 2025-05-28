@@ -60,7 +60,9 @@ All loaders feature:
 | **Bounce Loader** | <img src="screenshots/BounceLoader.gif"  alt="Bounce Loader"> | **Wave Loader** | <img src="screenshots/WaveLoader.gif"  alt="Wave Loader"> |
 | **Circle Loader** | <img src="screenshots/CircleLoader.gif"  alt="Circle Loader"> | **Dots Loader** | <img src="screenshots/DotsLoader.gif"  alt="Dots Loader"> |
 | **Rotating Square Loader** | <img src="screenshots/RotatingSquareLoader.gif"  alt="Rotating Square Loader"> | **Glowing Loader** | <img src="screenshots/GlowingLoader.gif"  alt="Glowing Loader"> |
-| **Typing Loader** | <img src="screenshots/TypingLoader.gif"  alt="Typing Loader"> | **Ripple Loader** | <img src="screenshots/RippleLoader.gif"  alt="Ripple Loader"> |
+| **Typing Loader** | <img src="screenshots/TypingLoader.gif"  alt="Typing Loader"> | **Ripple Loader** | <img src="screenshots/rippleAnimation.gif"  alt="Ripple Loader"> |
+| **HeartBeat Loader** | <img src="screenshots/heartAnimation.gif"  alt="Typing Loader"> | ** ** |   |
+
 
 ### Innovative Loaders Gallery
 
@@ -69,7 +71,7 @@ All loaders feature:
 | **DNA Helix Loader** | <img src="screenshots/DnaHelixLoader.gif"  alt="DNA Helix Loader"> | **Morphing Shape Loader** | <img src="screenshots/MorphingShapeLoader.gif"  alt="Morphing Shape Loader"> |
 | **Galaxy Spiral Loader** | <img src="screenshots/GalaxySpiralLoader.gif"  alt="Galaxy Spiral Loader"> | **Particle Vortex Loader** | <img src="screenshots/ParticleVortexLoader.gif"  alt="Particle Vortex Loader"> |
 | **Fractal Tree Loader** | <img src="screenshots/FractalTreeLoader.gif"  alt="Fractal Tree Loader"> | **Liquid Blob Loader** | <img src="screenshots/LiquidBlobLoader.gif"  alt="Liquid Blob Loader"> |
-| **Flipping Card Loader** | <img src="screenshots/FlippingCardLoader.gif"  alt="Flipping Card Loader"> | **Heartbeat Loader** | <img src="screenshots/HeartbeatLoader.gif"  alt="Heartbeat Loader"> |
+| **Flipping Card Loader** | <img src="screenshots/FlippingCardLoader.gif"  alt="Flipping Card Loader"> |   |
 
 ## Getting started
 
