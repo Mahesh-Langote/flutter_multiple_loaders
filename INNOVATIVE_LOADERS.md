@@ -209,3 +209,32 @@ controller.pause();
 controller.resume();
 controller.reset();
 ```
+
+### Heartbeat Loader
+
+The Heartbeat Loader displays a realistic anatomical heart animation with authentic cardiac rhythm patterns, blood flow simulation, and optional EKG-style pulse lines.
+
+**Features:**
+- Realistic cardiac rhythm with systole and diastole phases
+- Blood flow simulation with animated particles moving through chambers and vessels
+- Optional EKG-style pulse lines displaying heart rhythm
+- Anatomically correct heart shape with chambers and major vessels
+- Dynamic color transitions for oxygen-rich/poor blood simulation
+- Customizable pulse intensity and visual effects
+- Realistic heartbeat timing with double-beat pattern followed by pause
+
+**Example Usage:**
+```dart
+HeartbeatLoader(
+  pulseIntensity: 0.4, // Intensity of the heartbeat pulse (0.1 to 1.0)
+  showBloodFlow: true, // Show blood flow animation inside the heart
+  showPulseLines: false, // Show EKG-style pulse lines
+  options: LoaderOptions(
+    color: Colors.red, // Primary heart color
+    secondaryColor: Colors.blue, // Deoxygenated blood color
+    tertiaryColor: Colors.pink, // Oxygenated blood color
+    size: LoaderSize.large,
+    durationMs: 2000, // Heartbeat cycle duration
+  ),
+)
+```
