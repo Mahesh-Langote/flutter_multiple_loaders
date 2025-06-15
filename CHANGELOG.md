@@ -1,4 +1,13 @@
- 
+## 1.0.3
+
+* Added new innovative loader:
+  * NeonPulseLoader: A futuristic cyberpunk-style loader with multiple concentric neon rings
+  * Features customizable glow intensity, ring count, and optional rainbow color cycling
+  * Includes realistic neon glow effects with multiple shadow layers for authentic cyberpunk aesthetics
+  * Smooth phase-offset pulsing animation creates mesmerizing visual depth
+* Updated documentation to include the new NeonPulseLoader
+* Enhanced example app to showcase the NeonPulseLoader animation
+
 ## 1.0.2
 
 * Added new innovative loaders:

@@ -304,6 +304,23 @@ class LoaderCategoryManager {
                   pageCount: 20,
                 ),
           ),
+          LoaderInfo(
+            name: 'NeonPulse',
+            description: 'Futuristic neon rings with glow effects',
+            primaryColor: Colors.cyan,
+            secondaryColor: Colors.pinkAccent,
+            tertiaryColor: Colors.deepPurple,
+            durationMs: 2000,
+            usesStrokeWidth: true,
+            strokeWidth: 2.0,
+            createLoader:
+                (options, controller) => NeonPulseLoader(
+                  options: options,
+                  controller: controller,
+                  ringCount: 4,
+                  glowIntensity: 3.0,
+                ),
+          ),
         ],
       ),
     ];
