@@ -104,14 +104,14 @@ class _WaveLoaderState extends State<WaveLoader> with SingleTickerProviderStateM
   }
 
   Color _getBarColor(int index) {
-    if (widget.options.secondaryColor != null && index % 2 == 1) {
-      return widget.options.secondaryColor!;
+    if (widget.options.quaternaryColor != null && index % 4 == 3) {
+      return widget.options.quaternaryColor!;
     }
     if (widget.options.tertiaryColor != null && index % 3 == 2) {
       return widget.options.tertiaryColor!;
     }
-    if (widget.options.quaternaryColor != null && index % 4 == 3) {
-      return widget.options.quaternaryColor!;
+    if (widget.options.secondaryColor != null && index % 2 == 1) {
+      return widget.options.secondaryColor!;
     }
     return widget.options.color;
   }

@@ -87,14 +87,14 @@ class _BounceLoaderState extends State<BounceLoader> with SingleTickerProviderSt
   }
 
   Color _getDotColor(int index) {
-    if (index == 0) {
-      return widget.options.color;
-    } else if (index == 1 && widget.options.secondaryColor != null) {
-      return widget.options.secondaryColor!;
+    if (index == 3 && widget.options.quaternaryColor != null) {
+      return widget.options.quaternaryColor!;
     } else if (index == 2 && widget.options.tertiaryColor != null) {
       return widget.options.tertiaryColor!;
-    } else if (index == 3 && widget.options.quaternaryColor != null) {
-      return widget.options.quaternaryColor!;
+    } else if (index == 1 && widget.options.secondaryColor != null) {
+      return widget.options.secondaryColor!;
+    } else if (index == 0) {
+      return widget.options.color;
     }
     return widget.options.color;
   }
