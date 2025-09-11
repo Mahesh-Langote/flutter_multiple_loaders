@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../utils/loader_size.dart';
 
 /// Options class for configuring loaders.
@@ -27,6 +28,9 @@ class LoaderOptions {
   /// Tertiary color for loaders that support multiple colors.
   final Color? tertiaryColor;
 
+  /// Quaternary color for loaders that support it
+  final Color? quaternaryColor;
+
   /// The stroke width for loaders that use strokes (like circle loaders).
   final double strokeWidth;
 
@@ -39,6 +43,7 @@ class LoaderOptions {
     this.backgroundColor,
     this.secondaryColor,
     this.tertiaryColor,
+    this.quaternaryColor,
     this.strokeWidth = 4.0,
   });
 
@@ -51,6 +56,7 @@ class LoaderOptions {
     Color? backgroundColor,
     Color? secondaryColor,
     Color? tertiaryColor,
+    Color? quaternaryColor,
     double? strokeWidth,
   }) {
     return LoaderOptions(
@@ -61,6 +67,7 @@ class LoaderOptions {
       backgroundColor: backgroundColor ?? this.backgroundColor,
       secondaryColor: secondaryColor ?? this.secondaryColor,
       tertiaryColor: tertiaryColor ?? this.tertiaryColor,
+      quaternaryColor: quaternaryColor ?? this.quaternaryColor,
       strokeWidth: strokeWidth ?? this.strokeWidth,
     );
   }
