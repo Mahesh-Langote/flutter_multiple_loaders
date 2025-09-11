@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/loader_options.dart';
 import '../utils/loader_controller.dart';
 
@@ -19,20 +20,13 @@ class DotsLoader extends StatefulWidget {
   final double spacing;
 
   /// Creates a [DotsLoader] with the given options.
-  const DotsLoader({
-    super.key,
-    this.options = const LoaderOptions(),
-    this.controller,
-    this.dotCount = 3,
-    this.spacing = 4.0,
-  });
+  const DotsLoader({super.key, this.options = const LoaderOptions(), this.controller, this.dotCount = 3, this.spacing = 4.0});
 
   @override
   State<DotsLoader> createState() => _DotsLoaderState();
 }
 
-class _DotsLoaderState extends State<DotsLoader>
-    with SingleTickerProviderStateMixin {
+class _DotsLoaderState extends State<DotsLoader> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late List<Animation<double>> _opacityAnimations;
   late LoaderController _loaderController;
@@ -40,10 +34,7 @@ class _DotsLoaderState extends State<DotsLoader>
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: widget.options.durationMs),
-    );
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: widget.options.durationMs));
 
     _initializeAnimations();
 
@@ -62,12 +53,7 @@ class _DotsLoaderState extends State<DotsLoader>
       final beginPoint = index / widget.dotCount;
       final endPoint = beginPoint + (1 / widget.dotCount);
 
-      return Tween<double>(begin: 0.3, end: 1.0).animate(
-        CurvedAnimation(
-          parent: _animationController,
-          curve: Interval(beginPoint, endPoint, curve: Curves.easeInOut),
-        ),
-      );
+      return Tween<double>(begin: 0.3, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(beginPoint, endPoint, curve: Curves.easeInOut)));
     });
   }
 
@@ -93,8 +79,7 @@ class _DotsLoaderState extends State<DotsLoader>
   @override
   Widget build(BuildContext context) {
     final dotSize = widget.options.size.value / 3;
-    final totalWidth =
-        (dotSize * widget.dotCount) + (widget.spacing * (widget.dotCount - 1));
+    final totalWidth = (dotSize * widget.dotCount) + (widget.spacing * (widget.dotCount - 1));
 
     return AnimatedBuilder(
       animation: _animationController,
@@ -107,14 +92,7 @@ class _DotsLoaderState extends State<DotsLoader>
             children: List.generate(widget.dotCount, (index) {
               return Opacity(
                 opacity: _opacityAnimations[index].value,
-                child: Container(
-                  width: dotSize,
-                  height: dotSize,
-                  decoration: BoxDecoration(
-                    color: _getDotColor(index),
-                    shape: BoxShape.circle,
-                  ),
-                ),
+                child: Container(width: dotSize, height: dotSize, decoration: BoxDecoration(color: _getDotColor(index), shape: BoxShape.circle)),
               );
             }),
           ),
@@ -129,6 +107,9 @@ class _DotsLoaderState extends State<DotsLoader>
     }
     if (widget.options.tertiaryColor != null && index % 3 == 2) {
       return widget.options.tertiaryColor!;
+    }
+    if (widget.options.quaternaryColor != null && index % 4 == 3) {
+      return widget.options.quaternaryColor!;
     }
     return widget.options.color;
   }
