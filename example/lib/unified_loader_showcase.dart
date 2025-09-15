@@ -25,6 +25,7 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
   Color _primaryColor = Colors.blue;
   Color _secondaryColor = Colors.pinkAccent;
   Color _tertiaryColor = Colors.white;
+  Color _quaternaryColor = Colors.purple;
   int _durationMs = 1500;
   double _strokeWidth = 4.0;
 
@@ -77,6 +78,7 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
         _secondaryColor =
             loaderInfo.secondaryColor ?? _primaryColor.withValues(alpha: 0.7);
         _tertiaryColor = loaderInfo.tertiaryColor ?? Colors.white;
+        _quaternaryColor = Colors.purple; // Default quaternary color
         _durationMs = loaderInfo.durationMs;
         _strokeWidth = loaderInfo.strokeWidth;
       });
@@ -107,6 +109,7 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
       backgroundColor: Colors.grey.withAlpha(51),
       secondaryColor: _secondaryColor,
       tertiaryColor: _tertiaryColor,
+      quaternaryColor: _quaternaryColor,
       strokeWidth: _strokeWidth,
     );
 
@@ -165,6 +168,7 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
               primaryColor: _primaryColor,
               secondaryColor: _secondaryColor,
               tertiaryColor: _tertiaryColor,
+              quaternaryColor: _quaternaryColor,
               durationMs: _durationMs,
               strokeWidth: _strokeWidth,
               showStrokeWidth: currentLoader.usesStrokeWidth,
@@ -177,6 +181,8 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
                   (value) => setState(() => _secondaryColor = value),
               onTertiaryColorChanged:
                   (value) => setState(() => _tertiaryColor = value),
+              onQuaternaryColorChanged:
+                  (value) => setState(() => _quaternaryColor = value),
               onDurationChanged: (value) => setState(() => _durationMs = value),
               onStrokeWidthChanged:
                   currentLoader.usesStrokeWidth
@@ -223,6 +229,7 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
             primaryColor: _primaryColor,
             secondaryColor: _secondaryColor,
             tertiaryColor: _tertiaryColor,
+            quaternaryColor: _quaternaryColor,
             durationMs: _durationMs,
             strokeWidth: _strokeWidth,
             showStrokeWidth: currentLoader.usesStrokeWidth,
@@ -234,6 +241,8 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
                 (value) => setState(() => _secondaryColor = value),
             onTertiaryColorChanged:
                 (value) => setState(() => _tertiaryColor = value),
+            onQuaternaryColorChanged:
+                (value) => setState(() => _quaternaryColor = value),
             onDurationChanged: (value) => setState(() => _durationMs = value),
             onStrokeWidthChanged:
                 currentLoader.usesStrokeWidth

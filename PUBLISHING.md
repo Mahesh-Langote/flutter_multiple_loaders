@@ -2,6 +2,13 @@
 
 This guide covers how to publish the Flutter Multiple Loaders package to [pub.dev](https://pub.dev), the official package repository for Dart and Flutter packages.
 
+## Recent Changes (v1.0.4)
+
+The latest version includes:
+- **Quaternary Color Support**: Extended color customization with quaternary color parameter
+- **Enhanced Color Management**: Improved color handling logic in BounceLoader, DotsLoader, and WaveLoader
+- **Community Contribution**: Added by Abhishek Sunkewar (@abhisunkewar)
+
 ## Preparation
 
 1. Update `pubspec.yaml`

@@ -21,6 +21,9 @@ class LoaderControlPanel extends StatelessWidget {
   /// The currently selected tertiary color
   final Color? tertiaryColor;
 
+  /// The currently selected quaternary color
+  final Color? quaternaryColor;
+
   /// The animation duration in milliseconds
   final int durationMs;
 
@@ -45,6 +48,9 @@ class LoaderControlPanel extends StatelessWidget {
   /// Callback when the tertiary color changes
   final void Function(Color color) onTertiaryColorChanged;
 
+  /// Callback when the quaternary color changes
+  final void Function(Color color) onQuaternaryColorChanged;
+
   /// Callback when the duration changes
   final void Function(int duration) onDurationChanged;
 
@@ -65,10 +71,12 @@ class LoaderControlPanel extends StatelessWidget {
     required this.onDurationChanged,
     this.secondaryColor,
     this.tertiaryColor,
+    this.quaternaryColor,
     this.strokeWidth,
     this.showStrokeWidth = false,
     required this.onSecondaryColorChanged,
     required this.onTertiaryColorChanged,
+    required this.onQuaternaryColorChanged,
     this.onStrokeWidthChanged,
   });
   @override
@@ -252,6 +260,27 @@ class LoaderControlPanel extends StatelessWidget {
                       ),
                     ),
                     Expanded(flex: 3, child: _buildTertiaryColorDropdown()),
+                  ],
+                ),
+              ),
+
+            if (quaternaryColor != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        'Quaternary Color:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: isSmallScreen ? 14 : 16,
+                        ),
+                      ),
+                    ),
+                    Expanded(flex: 3, child: _buildQuaternaryColorDropdown()),
                   ],
                 ),
               ),
@@ -475,6 +504,47 @@ class LoaderControlPanel extends StatelessWidget {
       onChanged: (value) {
         if (value != null && tertiaryColors.containsKey(value)) {
           onTertiaryColorChanged(tertiaryColors[value]!);
+        }
+      },
+    );
+  }
+
+  Widget _buildQuaternaryColorDropdown() {
+    // Define quaternary colors with unique values
+    final Map<String, Color> quaternaryColors = {
+      'Purple': Colors.purple,
+      'Orange': Colors.orange,
+      'Teal': Colors.teal,
+      'Brown': Colors.brown,
+      'Grey': Colors.grey,
+      'Cyan': Colors.cyan,
+    };
+
+    // Find the key for the current color or use default
+    String currentColorKey = 'Purple';
+    if (quaternaryColor != null) {
+      for (var entry in quaternaryColors.entries) {
+        if (entry.value == quaternaryColor) {
+          currentColorKey = entry.key;
+          break;
+        }
+      }
+    }
+
+    return DropdownButton<String>(
+      value: currentColorKey,
+      items:
+          quaternaryColors.entries
+              .map(
+                (entry) => DropdownMenuItem<String>(
+                  value: entry.key,
+                  child: Text(entry.key),
+                ),
+              )
+              .toList(),
+      onChanged: (value) {
+        if (value != null && quaternaryColors.containsKey(value)) {
+          onQuaternaryColorChanged(quaternaryColors[value]!);
         }
       },
     );

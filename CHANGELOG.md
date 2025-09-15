@@ -1,3 +1,11 @@
+## 1.0.4
+
+* Added support for quaternary color parameter in loader options
+  * Extended LoaderOptions class with quaternaryColor property
+  * Updated BounceLoader, DotsLoader, and WaveLoader to support quaternary colors
+  * Refactored color handling logic for improved efficiency and better color distribution
+  * Contributed by Abhishek Sunkewar (@abhisunkewar)
+
 ## 1.0.3
 
 * Added new innovative loader:
