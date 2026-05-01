@@ -20,12 +20,12 @@ class LoaderFutureBuilder<T> extends StatelessWidget {
   final Widget Function(BuildContext context, Object error)? errorBuilder;
 
   const LoaderFutureBuilder({
-    Key? key,
+    super.key,
     required this.future,
     required this.loader,
     required this.builder,
     this.errorBuilder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
