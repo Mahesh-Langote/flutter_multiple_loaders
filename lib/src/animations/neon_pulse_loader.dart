@@ -41,6 +41,9 @@ class _NeonPulseLoaderState extends State<NeonPulseLoader>
     with TickerProviderStateMixin {
   late AnimationController _primaryController;
   late AnimationController _secondaryController;
+  late List<CurvedAnimation> _pulseCurvedAnimations;
+  late List<CurvedAnimation> _opacityCurvedAnimations;
+  late CurvedAnimation _rainbowCurvedAnimation;
   late List<Animation<double>> _pulseAnimations;
   late List<Animation<double>> _opacityAnimations;
   late Animation<double> _rainbowAnimation;
@@ -63,39 +66,32 @@ class _NeonPulseLoaderState extends State<NeonPulseLoader>
     );
 
     // Initialize pulse animations for each ring with different phases
-    _pulseAnimations = List.generate(widget.ringCount, (index) {
+    _pulseCurvedAnimations = List.generate(widget.ringCount, (index) {
       final phase = index / widget.ringCount;
-      return Tween<double>(begin: 0.3, end: 1.0).animate(
-        CurvedAnimation(
-          parent: _primaryController,
-          curve: Interval(
-            phase,
-            (phase + 0.7).clamp(0.0, 1.0),
-            curve: Curves.easeInOut,
-          ),
-        ),
+      return CurvedAnimation(
+        parent: _primaryController,
+        curve: Interval(phase, (phase + 0.7).clamp(0.0, 1.0), curve: Curves.easeInOut),
       );
+    });
+    _pulseAnimations = List.generate(widget.ringCount, (index) {
+      return Tween<double>(begin: 0.3, end: 1.0).animate(_pulseCurvedAnimations[index]);
     });
 
     // Initialize opacity animations for glow effect
-    _opacityAnimations = List.generate(widget.ringCount, (index) {
+    _opacityCurvedAnimations = List.generate(widget.ringCount, (index) {
       final phase = index / widget.ringCount;
-      return Tween<double>(begin: 0.1, end: 0.8).animate(
-        CurvedAnimation(
-          parent: _primaryController,
-          curve: Interval(
-            phase,
-            (phase + 0.8).clamp(0.0, 1.0),
-            curve: Curves.easeInOut,
-          ),
-        ),
+      return CurvedAnimation(
+        parent: _primaryController,
+        curve: Interval(phase, (phase + 0.8).clamp(0.0, 1.0), curve: Curves.easeInOut),
       );
+    });
+    _opacityAnimations = List.generate(widget.ringCount, (index) {
+      return Tween<double>(begin: 0.1, end: 0.8).animate(_opacityCurvedAnimations[index]);
     });
 
     // Rainbow color cycling animation
-    _rainbowAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _secondaryController, curve: Curves.linear),
-    );
+    _rainbowCurvedAnimation = CurvedAnimation(parent: _secondaryController, curve: Curves.linear);
+    _rainbowAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_rainbowCurvedAnimation);
 
     _loaderController = widget.controller ?? LoaderController();
     _loaderController.initialize(_primaryController);
@@ -112,6 +108,13 @@ class _NeonPulseLoaderState extends State<NeonPulseLoader>
 
   @override
   void dispose() {
+    for (final ca in _pulseCurvedAnimations) {
+      ca.dispose();
+    }
+    for (final ca in _opacityCurvedAnimations) {
+      ca.dispose();
+    }
+    _rainbowCurvedAnimation.dispose();
     _primaryController.dispose();
     _secondaryController.dispose();
     super.dispose();

@@ -26,6 +26,7 @@ class PulseLoader extends StatefulWidget {
 class _PulseLoaderState extends State<PulseLoader>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late CurvedAnimation _curvedAnimation;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
   late LoaderController _loaderController;
@@ -38,13 +39,9 @@ class _PulseLoaderState extends State<PulseLoader>
       duration: Duration(milliseconds: widget.options.durationMs),
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-
-    _opacityAnimation = Tween<double>(begin: 1.0, end: 0.3).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
+    _curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
+    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(_curvedAnimation);
+    _opacityAnimation = Tween<double>(begin: 1.0, end: 0.3).animate(_curvedAnimation);
 
     _loaderController = widget.controller ?? LoaderController();
     _loaderController.initialize(_animationController);
@@ -58,9 +55,8 @@ class _PulseLoaderState extends State<PulseLoader>
 
   @override
   void dispose() {
-    // Stop the animation before disposing
     _animationController.stop();
-    // Only dispose the controller if we created it internally
+    _curvedAnimation.dispose();
     if (widget.controller == null) {
       _animationController.dispose();
     }
