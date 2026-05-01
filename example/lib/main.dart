@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:example/unified_loader_showcase.dart';
+import 'package:example/developer_utilities_example.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -116,6 +117,14 @@ class MainScreen extends StatelessWidget {
                         destination: const UnifiedLoaderShowcaseFixed(),
                         color: Colors.deepPurple,
                         icon: Icons.auto_awesome,
+                      ),
+                      _buildNavButton(
+                        context: context,
+                        title: 'Developer Utilities',
+                        description: 'Overlay & FutureBuilder examples',
+                        destination: const DeveloperUtilitiesExample(),
+                        color: Colors.teal,
+                        icon: Icons.build_circle,
                       ),
                     ],
                   ),

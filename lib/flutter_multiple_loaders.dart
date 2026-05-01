@@ -19,6 +19,8 @@ export 'src/animations/typing_loader.dart';
 export 'src/animations/blinking_loader.dart';
 export 'src/animations/ripple_loader.dart';
 export 'src/animations/heartbeat_loader.dart';
+export 'src/animations/hourglass_loader.dart';
+export 'src/animations/clock_loader.dart';
 
 // Export new innovative animations
 export 'src/animations/dna_helix_loader.dart';
@@ -33,6 +35,8 @@ export 'src/animations/neon_pulse_loader.dart';
 // Export utility classes
 export 'src/utils/loader_size.dart';
 export 'src/utils/loader_controller.dart';
+export 'src/utils/multiple_loaders_overlay.dart';
+export 'src/utils/loader_future_builder.dart';
 
 // Export models
 export 'src/models/loader_options.dart';

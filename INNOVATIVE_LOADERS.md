@@ -226,15 +226,84 @@ The Heartbeat Loader displays a realistic anatomical heart animation with authen
 **Example Usage:**
 ```dart
 HeartbeatLoader(
-  pulseIntensity: 0.4, // Intensity of the heartbeat pulse (0.1 to 1.0)
-  showBloodFlow: true, // Show blood flow animation inside the heart
-  showPulseLines: false, // Show EKG-style pulse lines
+  pulseIntensity: 0.4,
+  showBloodFlow: true,
+  showPulseLines: false,
   options: LoaderOptions(
-    color: Colors.red, // Primary heart color
-    secondaryColor: Colors.blue, // Deoxygenated blood color
-    tertiaryColor: Colors.pink, // Oxygenated blood color
+    color: Colors.red,
+    secondaryColor: Colors.blue,
+    tertiaryColor: Colors.pink,
     size: LoaderSize.large,
-    durationMs: 2000, // Heartbeat cycle duration
+    durationMs: 2000,
   ),
 )
+```
+
+### NeonPulse Loader
+
+The NeonPulse Loader displays futuristic cyberpunk-style concentric neon rings with an authentic glow effect and optional rainbow color cycling.
+
+**Features:**
+- Multiple concentric neon rings with phase-offset pulsing
+- Realistic glow effect via multiple shadow layers
+- Configurable ring count and glow intensity
+- Optional rainbow color cycling mode
+- Smooth, mesmerizing depth effect
+
+**Example Usage:**
+```dart
+NeonPulseLoader(
+  ringCount: 4,
+  glowIntensity: 3.0,
+  options: LoaderOptions(
+    color: Colors.cyan,
+    secondaryColor: Colors.pinkAccent,
+    tertiaryColor: Colors.deepPurple,
+    size: LoaderSize.large,
+    strokeWidth: 2.0,
+    durationMs: 2000,
+  ),
+)
+```
+
+---
+
+## Common Customization Options
+
+All innovative loaders can be customized using the `LoaderOptions` class:
+
+- **color**: The primary color of the loader
+- **secondaryColor**: Secondary color for elements that need a different color
+- **tertiaryColor**: Third color option for more complex loaders
+- **quaternaryColor**: Fourth color option (e.g., BounceLoader, DotsLoader, WaveLoader)
+- **size**: The size of the loader (`LoaderSize.small`, `LoaderSize.medium`, `LoaderSize.large`, etc.)
+- **durationMs**: Animation duration in milliseconds
+- **loop**: Whether the animation should loop continuously
+- **backgroundColor**: Optional background color
+- **strokeWidth**: Width of strokes for applicable loaders
+
+## Performance Considerations
+
+Some of the more complex loaders (like Galaxy Spiral and Particle Vortex) draw a higher number of elements and may impact performance on lower-end devices. Consider using simpler loaders for performance-critical applications or reducing the number of particles/elements if needed.
+
+## Custom Animation Control
+
+For fine-grained control over the animations, provide a custom `LoaderController`:
+
+```dart
+final controller = LoaderController();
+
+// In your widget:
+LiquidBlobLoader(
+  options: const LoaderOptions(
+    color: Colors.blueAccent,
+    size: LoaderSize.large,
+  ),
+  controller: controller,
+)
+
+// Later, control the animation:
+controller.start();
+controller.stop();
+controller.reset();
 ```
