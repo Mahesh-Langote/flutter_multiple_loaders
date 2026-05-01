@@ -22,6 +22,11 @@ A Flutter package providing a collection of customizable loading animations for 
 
 Experience all the loaders in action: **[Flutter Multiple Loaders Demo](https://flutter-multiple-loaders.vercel.app/)**
 
+## Requirements
+
+- Flutter SDK >= 1.17.0
+- Dart SDK >= 3.7.2
+
 ## Features
 
 This package includes multiple loading animation styles with customizable properties:
@@ -86,7 +91,7 @@ Add the dependency to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_multiple_loaders: ^0.0.7
+  flutter_multiple_loaders: ^1.0.4
 ```
 
 Then run:

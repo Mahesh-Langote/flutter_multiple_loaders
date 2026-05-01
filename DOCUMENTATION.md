@@ -3,6 +3,7 @@
 This document provides detailed information about the Flutter Multiple Loaders package, its components, and how to use them effectively in your Flutter applications.
 
 ## Table of Contents
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Available Loaders](#available-loaders)
 - [Customization Options](#customization-options)
@@ -10,13 +11,18 @@ This document provides detailed information about the Flutter Multiple Loaders p
 - [Best Practices](#best-practices)
 - [Examples](#examples)
 
+## Requirements
+
+- Flutter SDK >= 1.17.0
+- Dart SDK >= 3.7.2
+
 ## Installation
 
 To use this package, add `flutter_multiple_loaders` as a dependency in your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_multiple_loaders: ^0.0.1
+  flutter_multiple_loaders: ^1.0.4
 ```
 
 Then run:
