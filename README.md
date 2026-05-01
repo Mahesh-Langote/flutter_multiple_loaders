@@ -31,6 +31,8 @@ Experience all the loaders in action: **[Flutter Multiple Loaders Demo](https://
 
 This package includes multiple loading animation styles with customizable properties:
 
+### Standard Loaders
+
 - **Spinner Loader**: A classic spinning circular loader
 - **Pulse Loader**: A circle that pulses in and out
 - **Bounce Loader**: Multiple dots that bounce up and down
@@ -38,10 +40,14 @@ This package includes multiple loading animation styles with customizable proper
 - **Circle Loader**: A circular progress indicator with customizable properties
 - **Dots Loader**: Multiple dots that fade in and out in sequence
 - **Rotating Square Loader**: A square that rotates on its center axis
+- **Flipping Card Loader**: A card that flips in 3D
 - **Glowing Loader**: A circle with pulsing glow effects and gradient colors
 - **Typing Loader**: A typing indicator with animated dots, commonly used in chat applications
 - **Blinking Loader**: A shape (circle, square, triangle, or star) that fades in and out
-- **Ripple Loader**: Concentric circles that expand outward like ripples on water with customizable ripple count
+- **Ripple Loader**: Concentric circles that expand outward like ripples on water
+- **Heartbeat Loader**: A realistic anatomical heart animation with authentic cardiac rhythm patterns
+- **Hourglass Loader** *(new in 1.1.0)*: A smooth hourglass with Bézier curves and animated sand flow
+- **Clock Loader** *(new in 1.1.0)*: An analog clock face with rotating hour and minute hands
 
 ### Innovative Loaders
 
@@ -51,13 +57,19 @@ This package includes multiple loading animation styles with customizable proper
 - **Particle Vortex Loader**: Mesmerizing particles flowing in a vortex pattern with customizable flow speed and colors
 - **Fractal Tree Loader**: A beautiful animated fractal tree that grows and branches organically
 - **Liquid Blob Loader**: A morphing liquid-like blob with fluid motion and realistic highlights
-- **Page Turning Loader**: A book with smoothly turning pages that simulates a realistic reading animation with enhanced 3D perspective, dynamic shadows, natural page bending, and realistic content visualization
-- **Heartbeat Loader**: A realistic anatomical heart animation with authentic cardiac rhythm patterns, blood flow simulation, EKG-style pulse lines, and enhanced visual effects including systole/diastole phases
+- **Page Turning Loader**: A book with smoothly turning pages that simulates a realistic reading animation
+- **Heartbeat Loader**: A realistic anatomical heart animation with authentic cardiac rhythm patterns
+- **Neon Pulse Loader**: Futuristic cyberpunk-style concentric neon rings with glow effects
+
+### 🛠️ Developer Utilities *(new in 1.1.0)*
+
+- **`MultipleLoaders.showOverlay`** — One-line modal loading barrier that blocks user interaction during async tasks
+- **`LoaderFutureBuilder<T>`** — Drop-in `FutureBuilder` wrapper that auto-shows a loader while waiting
 
 All loaders feature:
 
 - Customizable sizes (extra small to extra large)
-- Custom colors (primary, secondary, and tertiary)
+- Custom colors (primary, secondary, tertiary, and quaternary)
 - Adjustable animation speed
 - Optional background colors
 - Animation control (start, stop, reset)
@@ -73,7 +85,8 @@ All loaders feature:
 | **Circle Loader** | <img src="screenshots/CircleLoader.gif"  alt="Circle Loader"> | **Dots Loader** | <img src="screenshots/DotsLoader.gif"  alt="Dots Loader"> |
 | **Rotating Square Loader** | <img src="screenshots/RotatingSquareLoader.gif"  alt="Rotating Square Loader"> | **Glowing Loader** | <img src="screenshots/GlowingLoader.gif"  alt="Glowing Loader"> |
 | **Typing Loader** | <img src="screenshots/TypingLoader.gif"  alt="Typing Loader"> | **Ripple Loader** | <img src="screenshots/rippleAnimation.gif"  alt="Ripple Loader"> |
-| **HeartBeat Loader** | <img src="screenshots/heartAnimation.gif"  alt="Typing Loader"> | ** ** |   |
+| **HeartBeat Loader** | <img src="screenshots/heartAnimation.gif"  alt="Heartbeat Loader"> | **Hourglass Loader** | *(screenshot coming soon)* |
+| **Clock Loader** | *(screenshot coming soon)* | | |
 
 
 ### Innovative Loaders Gallery
@@ -83,7 +96,7 @@ All loaders feature:
 | **DNA Helix Loader** | <img src="screenshots/DnaHelixLoader.gif"  alt="DNA Helix Loader"> | **Morphing Shape Loader** | <img src="screenshots/MorphingShapeLoader.gif"  alt="Morphing Shape Loader"> |
 | **Galaxy Spiral Loader** | <img src="screenshots/GalaxySpiralLoader.gif"  alt="Galaxy Spiral Loader"> | **Particle Vortex Loader** | <img src="screenshots/ParticleVortexLoader.gif"  alt="Particle Vortex Loader"> |
 | **Fractal Tree Loader** | <img src="screenshots/FractalTreeLoader.gif"  alt="Fractal Tree Loader"> | **Liquid Blob Loader** | <img src="screenshots/LiquidBlobLoader.gif"  alt="Liquid Blob Loader"> |
-| **Flipping Card Loader** | <img src="screenshots/FlippingCardLoader.gif"  alt="Flipping Card Loader"> |   |
+| **Flipping Card Loader** | <img src="screenshots/FlippingCardLoader.gif"  alt="Flipping Card Loader"> | | |
 
 ## Getting started
 
@@ -91,7 +104,7 @@ Add the dependency to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_multiple_loaders: ^1.0.4
+  flutter_multiple_loaders: ^1.1.0
 ```
 
 Then run:
@@ -131,47 +144,94 @@ CircleLoader();
 // Blinking animation with different shapes
 BlinkingLoader();  // default is circle
 
-// Book animations
+// Book animation
 PageTurningLoader(
-  pageCount: 20,  // Number of pages in the book
+  pageCount: 20,
   options: LoaderOptions(
-    color: Colors.indigo,        // Cover color
-    secondaryColor: Colors.indigoAccent,  // Text/content color
-    tertiaryColor: Colors.white, // Page color
-    durationMs: 3500,            // Animation duration
+    color: Colors.indigo,
+    secondaryColor: Colors.indigoAccent,
+    tertiaryColor: Colors.white,
+    durationMs: 3500,
   ),
-); 
+);
 
-// Heartbeat animations
+// Heartbeat animation
 HeartbeatLoader(
-  pulseIntensity: 0.4,        // Intensity of the heartbeat pulse (0.1 to 1.0)
-  showBloodFlow: true,        // Show blood flow animation inside the heart
-  showPulseLines: false,      // Show EKG-style pulse lines
+  pulseIntensity: 0.4,
   options: LoaderOptions(
-    color: Colors.red,         // Heart color
-    size: LoaderSize.large,    // Heart size
-    durationMs: 2000,          // Heartbeat cycle duration
+    color: Colors.red,
+    size: LoaderSize.large,
+    durationMs: 2000,
   ),
 );
 
-// Shape animations
-BlinkingLoader(shape: BlinkingShape.square);
-BlinkingLoader(shape: BlinkingShape.triangle);
-BlinkingLoader(shape: BlinkingShape.star);
-
-// Dots animation
-DotsLoader();
-
-// Ripple animation
-RippleLoader(
-  rippleCount: 4,              // Number of ripple circles
+// Hourglass animation (new in 1.1.0)
+HourglassLoader(
   options: LoaderOptions(
-    color: Colors.cyan,        // Ripple color
-    strokeWidth: 3.0,          // Thickness of ripple circles
-    size: LoaderSize.large,    // Overall size
-    durationMs: 2500,          // Animation duration
+    color: Colors.amber,
+    secondaryColor: Colors.amber.withOpacity(0.35),
+    size: LoaderSize.large,
+    strokeWidth: 3.0,
+    durationMs: 2400,
   ),
 );
+
+// Clock animation (new in 1.1.0)
+ClockLoader(
+  options: LoaderOptions(
+    color: Colors.deepPurple,
+    secondaryColor: Colors.deepPurpleAccent,
+    size: LoaderSize.large,
+    strokeWidth: 3.0,
+    durationMs: 3000,
+  ),
+);
+```
+
+### 🛠️ Developer Utilities (new in 1.1.0)
+
+#### Loading Overlay Dialog
+
+Display a full-screen loading barrier that blocks user interaction during async tasks:
+
+```dart
+// Show the overlay
+MultipleLoaders.showOverlay(
+  context,
+  loader: const SpinnerLoader(
+    options: LoaderOptions(
+      color: Colors.white,
+      size: LoaderSize.large,
+    ),
+  ),
+);
+
+// Perform your async work...
+await myLongRunningTask();
+
+// Hide the overlay
+MultipleLoaders.hideOverlay(context);
+```
+
+#### LoaderFutureBuilder
+
+A drop-in replacement for `FutureBuilder` that automatically shows a loader while the future is pending:
+
+```dart
+LoaderFutureBuilder<String>(
+  future: myNetworkRequest(),
+  loader: const CircleLoader(
+    options: LoaderOptions(
+      color: Colors.teal,
+      size: LoaderSize.large,
+      strokeWidth: 4.0,
+    ),
+  ),
+  builder: (context, data) {
+    // Only called when the future completes successfully!
+    return Text('Loaded: $data');
+  },
+)
 ```
 
 ### Customizing Loaders
@@ -179,7 +239,6 @@ RippleLoader(
 All loaders accept custom options through the `LoaderOptions` class:
 
 ```dart
-// Customized spinner loader
 SpinnerLoader(
   options: LoaderOptions(
     color: Colors.purple,
@@ -197,17 +256,6 @@ WaveLoader(
     secondaryColor: Colors.green,
     tertiaryColor: Colors.orange,
     size: LoaderSize.medium,
-  ),
-);
-
-// Customized blinking star loader
-BlinkingLoader(
-  shape: BlinkingShape.star,
-  options: LoaderOptions(
-    color: Colors.amber,
-    size: LoaderSize.extraLarge,
-    durationMs: 800,
-    loop: true,
   ),
 );
 ```
@@ -248,14 +296,14 @@ class _MyWidgetState extends State<MyWidget> {
 
 ## Interactive Example
 
-The package includes a complete example app that demonstrates all loaders with interactive controls for customization:
+The package includes a complete example app that demonstrates all loaders with interactive controls for customization. The example app allows you to:
 
-The example app allows you to:
-
-- Switch between different loader types
-- Change sizes and colors
+- Switch between different loader types via category tabs (Standard / Innovative)
+- Change sizes, colors, and stroke widths via the control panel
 - Control animation duration
 - Start, stop, and reset animations
+- Try interactive **Developer Utilities** demos (Overlay & FutureBuilder)
+- Copy ready-to-use code snippets for every loader
 
 Check the [example](./example) folder for more detailed usage examples.
 

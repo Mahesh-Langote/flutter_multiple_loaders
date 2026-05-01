@@ -216,6 +216,34 @@ class LoaderCategoryManager {
                   pulseIntensity: 0.3,
                 ),
           ),
+          LoaderInfo(
+            name: 'Hourglass',
+            description: 'A flipping hourglass with animated sand flow',
+            primaryColor: Colors.amber,
+            secondaryColor: Colors.amber.withValues(alpha: 0.35),
+            durationMs: 2400,
+            usesStrokeWidth: true,
+            strokeWidth: 3.0,
+            createLoader:
+                (options, controller) => HourglassLoader(
+                  options: options,
+                  controller: controller,
+                ),
+          ),
+          LoaderInfo(
+            name: 'Clock',
+            description: 'An analog clock face with rotating hands',
+            primaryColor: Colors.deepPurple,
+            secondaryColor: Colors.deepPurpleAccent,
+            durationMs: 3000,
+            usesStrokeWidth: true,
+            strokeWidth: 3.0,
+            createLoader:
+                (options, controller) => ClockLoader(
+                  options: options,
+                  controller: controller,
+                ),
+          ),
         ],
       ),
       LoaderCategory(

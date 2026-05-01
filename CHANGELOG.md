@@ -1,3 +1,17 @@
+## 1.1.0
+
+* Added Classic Analog Loaders:
+  * **HourglassLoader**: A smooth hourglass animation with cubic Bézier curves, animated sand draining from the top bulb to the bottom bulb, and a sand stream at the waist. Fully supports `color`, `secondaryColor`, `size`, `strokeWidth`, and `durationMs`.
+  * **ClockLoader**: An analog clock face with tick marks, a rotating hour hand, and a faster-spinning minute hand creating a satisfying time-lapse effect. Supports all standard `LoaderOptions`.
+* Added Developer Utility Helpers:
+  * **`MultipleLoaders.showOverlay(context, loader: ...)`**: A static method that displays a full-screen modal loading barrier blocking user interaction until `MultipleLoaders.hideOverlay(context)` is called. Ideal for login, payment, and long async operations.
+  * **`LoaderFutureBuilder<T>`**: A drop-in replacement for Flutter's `FutureBuilder` that automatically displays any package loader during `ConnectionState.waiting` and hands off to a clean builder callback when data is ready — eliminating boilerplate async state handling.
+* Enhanced example app:
+  * Added a new **Developer Utilities** screen demonstrating `showOverlay` and `LoaderFutureBuilder` with a premium responsive grid layout.
+  * Code snippet popups (via `Icons.code` button → bottom sheet) added to each utility card, consistent with the existing loader showcase style.
+* Null safety & dependency improvements:
+  * Upgraded SDK constraint to `^3.7.2` and removed legacy/incompatible `dev_dependencies`.
+
 ## 1.0.4
 
 * Added support for quaternary color parameter in loader options
