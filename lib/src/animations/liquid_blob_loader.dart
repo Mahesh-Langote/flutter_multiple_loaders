@@ -28,6 +28,7 @@ class LiquidBlobLoader extends StatefulWidget {
 class _LiquidBlobLoaderState extends State<LiquidBlobLoader>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late CurvedAnimation _curvedAnimation;
   late Animation<double> _animation;
   late LoaderController _loaderController;
 
@@ -39,9 +40,8 @@ class _LiquidBlobLoaderState extends State<LiquidBlobLoader>
       duration: Duration(milliseconds: widget.options.durationMs),
     );
 
-    _animation = Tween<double>(begin: 0.0, end: 2 * math.pi).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.linear),
-    );
+    _curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.linear);
+    _animation = Tween<double>(begin: 0.0, end: 2 * math.pi).animate(_curvedAnimation);
 
     _loaderController = widget.controller ?? LoaderController();
     _loaderController.initialize(_animationController);
@@ -56,6 +56,7 @@ class _LiquidBlobLoaderState extends State<LiquidBlobLoader>
   @override
   void dispose() {
     _animationController.stop();
+    _curvedAnimation.dispose();
     if (widget.controller == null) {
       _animationController.dispose();
     }

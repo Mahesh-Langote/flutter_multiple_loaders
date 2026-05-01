@@ -27,6 +27,7 @@ class RotatingSquareLoader extends StatefulWidget {
 class _RotatingSquareLoaderState extends State<RotatingSquareLoader>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late CurvedAnimation _curvedAnimation;
   late Animation<double> _rotationAnimation;
   late LoaderController _loaderController;
 
@@ -38,8 +39,9 @@ class _RotatingSquareLoaderState extends State<RotatingSquareLoader>
       duration: Duration(milliseconds: widget.options.durationMs),
     );
 
+    _curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
     _rotationAnimation = Tween<double>(begin: 0.0, end: 2 * math.pi).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+      _curvedAnimation,
     );
 
     _loaderController = widget.controller ?? LoaderController();
@@ -54,9 +56,8 @@ class _RotatingSquareLoaderState extends State<RotatingSquareLoader>
 
   @override
   void dispose() {
-    // Stop the animation before disposing
     _animationController.stop();
-    // Only dispose the controller if we created it internally
+    _curvedAnimation.dispose();
     if (widget.controller == null) {
       _animationController.dispose();
     }

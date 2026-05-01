@@ -26,6 +26,7 @@ class CircleLoader extends StatefulWidget {
 class _CircleLoaderState extends State<CircleLoader>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late CurvedAnimation _curvedAnimation;
   late Animation<double> _progressAnimation;
   late LoaderController _loaderController;
 
@@ -37,8 +38,9 @@ class _CircleLoaderState extends State<CircleLoader>
       duration: Duration(milliseconds: widget.options.durationMs),
     );
 
+    _curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
     _progressAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+      _curvedAnimation,
     );
 
     _loaderController = widget.controller ?? LoaderController();
@@ -53,9 +55,8 @@ class _CircleLoaderState extends State<CircleLoader>
 
   @override
   void dispose() {
-    // Stop the animation before disposing
     _animationController.stop();
-    // Only dispose the controller if we created it internally
+    _curvedAnimation.dispose();
     if (widget.controller == null) {
       _animationController.dispose();
     }

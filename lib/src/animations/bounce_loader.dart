@@ -31,6 +31,7 @@ class BounceLoader extends StatefulWidget {
 class _BounceLoaderState extends State<BounceLoader>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late List<CurvedAnimation> _curvedAnimations;
   late List<Animation<double>> _bounceAnimations;
   late LoaderController _loaderController;
 
@@ -42,6 +43,8 @@ class _BounceLoaderState extends State<BounceLoader>
       duration: Duration(milliseconds: widget.options.durationMs),
     );
 
+    _curvedAnimations = [];
+    _bounceAnimations = [];
     _initializeAnimations();
 
     _loaderController = widget.controller ?? LoaderController();
@@ -55,8 +58,24 @@ class _BounceLoaderState extends State<BounceLoader>
   }
 
   void _initializeAnimations() {
-    _bounceAnimations = List.generate(widget.dotCount, (index) {
+    // Dispose old curved animations before recreating (called from didUpdateWidget too)
+    if (identical(this, this) && _bounceAnimations.isNotEmpty) {
+      for (final ca in _curvedAnimations) {
+        ca.dispose();
+      }
+    }
+    _curvedAnimations = List.generate(widget.dotCount, (index) {
       final beginPercent = index * (1 / widget.dotCount);
+      return CurvedAnimation(
+        parent: _animationController,
+        curve: Interval(
+          beginPercent,
+          beginPercent + (1 / widget.dotCount),
+          curve: Curves.linear,
+        ),
+      );
+    });
+    _bounceAnimations = List.generate(widget.dotCount, (index) {
       return TweenSequence<double>([
         TweenSequenceItem(
           tween: Tween<double>(
@@ -72,24 +91,16 @@ class _BounceLoaderState extends State<BounceLoader>
           ).chain(CurveTween(curve: Curves.easeIn)),
           weight: 50,
         ),
-      ]).animate(
-        CurvedAnimation(
-          parent: _animationController,
-          curve: Interval(
-            beginPercent,
-            beginPercent + (1 / widget.dotCount),
-            curve: Curves.linear,
-          ),
-        ),
-      );
+      ]).animate(_curvedAnimations[index]);
     });
   }
 
   @override
   void dispose() {
-    // Stop the animation before disposing
     _animationController.stop();
-    // Only dispose the controller if we created it internally
+    for (final ca in _curvedAnimations) {
+      ca.dispose();
+    }
     if (widget.controller == null) {
       _animationController.dispose();
     }

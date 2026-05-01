@@ -31,6 +31,7 @@ class TypingLoader extends StatefulWidget {
 class _TypingLoaderState extends State<TypingLoader>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late List<CurvedAnimation> _curvedAnimations;
   late List<Animation<double>> _dotAnimations;
   late LoaderController _loaderController;
 
@@ -42,6 +43,8 @@ class _TypingLoaderState extends State<TypingLoader>
       duration: Duration(milliseconds: widget.options.durationMs),
     );
 
+    _curvedAnimations = [];
+    _dotAnimations = [];
     // Create staggered animations for each dot
     _createDotAnimations();
 
@@ -56,12 +59,20 @@ class _TypingLoaderState extends State<TypingLoader>
   }
 
   void _createDotAnimations() {
-    _dotAnimations = List.generate(widget.dotCount, (index) {
-      // Calculate the delay for each dot
+    if (_dotAnimations.isNotEmpty) {
+      for (final ca in _curvedAnimations) {
+        ca.dispose();
+      }
+    }
+    _curvedAnimations = List.generate(widget.dotCount, (index) {
       final startInterval = index / widget.dotCount;
       final endInterval = (index + 0.5) / widget.dotCount;
-
-      // Create a tween sequence for scale and opacity
+      return CurvedAnimation(
+        parent: _animationController,
+        curve: Interval(startInterval, endInterval, curve: Curves.easeInOut),
+      );
+    });
+    _dotAnimations = List.generate(widget.dotCount, (index) {
       return TweenSequence<double>([
         TweenSequenceItem(
           tween: Tween<double>(
@@ -81,20 +92,16 @@ class _TypingLoaderState extends State<TypingLoader>
           tween: Tween<double>(begin: 0.5, end: 0.5),
           weight: 20,
         ),
-      ]).animate(
-        CurvedAnimation(
-          parent: _animationController,
-          curve: Interval(startInterval, endInterval, curve: Curves.easeInOut),
-        ),
-      );
+      ]).animate(_curvedAnimations[index]);
     });
   }
 
   @override
   void dispose() {
-    // Stop the animation before disposing
     _animationController.stop();
-    // Only dispose the controller if we created it internally
+    for (final ca in _curvedAnimations) {
+      ca.dispose();
+    }
     if (widget.controller == null) {
       _animationController.dispose();
     }

@@ -1,3 +1,12 @@
+## 1.1.1
+
+* **Memory Leak Fixes**: 
+  * Resolved `leak_tracker` warnings by properly disposing of `CurvedAnimation` instances across all animation loaders.
+  * Refactored internal animation logic to store `CurvedAnimation` as persistent fields in `State` classes for explicit disposal.
+  * Fixed potential Ticker leaks in `HourglassLoader`, `ClockLoader`, `GalaxySpiralLoader`, `FractalTreeLoader`, and 15+ other animation components.
+* Restored `flutter_lints` to `dev_dependencies` to ensure consistent code quality and static analysis.
+* Applied `use_super_parameters` to utility classes for modern Dart standards.
+
 ## 1.1.0
 
 * Added Classic Analog Loaders:

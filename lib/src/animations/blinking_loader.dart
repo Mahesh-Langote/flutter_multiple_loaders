@@ -48,6 +48,7 @@ enum BlinkingShape {
 class _BlinkingLoaderState extends State<BlinkingLoader>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late CurvedAnimation _curvedAnimation;
   late Animation<double> _opacityAnimation;
   late LoaderController _loaderController;
 
@@ -59,12 +60,11 @@ class _BlinkingLoaderState extends State<BlinkingLoader>
       duration: Duration(milliseconds: widget.options.durationMs),
     );
 
+    _curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
     _opacityAnimation = TweenSequence<double>([
       TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.2), weight: 1),
       TweenSequenceItem(tween: Tween<double>(begin: 0.2, end: 1.0), weight: 1),
-    ]).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
+    ]).animate(_curvedAnimation);
 
     _loaderController = widget.controller ?? LoaderController();
     _loaderController.initialize(_animationController);
@@ -96,9 +96,8 @@ class _BlinkingLoaderState extends State<BlinkingLoader>
 
   @override
   void dispose() {
-    // Always stop the animation before disposing to prevent ticker leaks
     _animationController.stop();
-    // Only dispose the controller if it's internally created
+    _curvedAnimation.dispose();
     if (widget.controller == null) {
       _animationController.dispose();
     }

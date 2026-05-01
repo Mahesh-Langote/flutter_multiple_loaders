@@ -28,6 +28,7 @@ class FractalTreeLoader extends StatefulWidget {
 class _FractalTreeLoaderState extends State<FractalTreeLoader>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late CurvedAnimation _curvedAnimation;
   late Animation<double> _animation;
   late LoaderController _loaderController;
 
@@ -39,9 +40,8 @@ class _FractalTreeLoaderState extends State<FractalTreeLoader>
       duration: Duration(milliseconds: widget.options.durationMs),
     );
 
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOutQuart),
-    );
+    _curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeOutQuart);
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_curvedAnimation);
 
     _loaderController = widget.controller ?? LoaderController();
     _loaderController.initialize(_animationController);
@@ -56,6 +56,7 @@ class _FractalTreeLoaderState extends State<FractalTreeLoader>
   @override
   void dispose() {
     _animationController.stop();
+    _curvedAnimation.dispose();
     if (widget.controller == null) {
       _animationController.dispose();
     }

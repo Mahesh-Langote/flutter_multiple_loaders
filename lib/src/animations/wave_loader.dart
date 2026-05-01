@@ -31,6 +31,7 @@ class WaveLoader extends StatefulWidget {
 class _WaveLoaderState extends State<WaveLoader>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late List<CurvedAnimation> _curvedAnimations;
   late List<Animation<double>> _barAnimations;
   late LoaderController _loaderController;
 
@@ -42,6 +43,8 @@ class _WaveLoaderState extends State<WaveLoader>
       duration: Duration(milliseconds: widget.options.durationMs),
     );
 
+    _curvedAnimations = [];
+    _barAnimations = [];
     _initializeAnimations();
 
     _loaderController = widget.controller ?? LoaderController();
@@ -55,16 +58,21 @@ class _WaveLoaderState extends State<WaveLoader>
   }
 
   void _initializeAnimations() {
-    _barAnimations = List.generate(widget.barCount, (index) {
+    if (_barAnimations.isNotEmpty) {
+      for (final ca in _curvedAnimations) {
+        ca.dispose();
+      }
+    }
+    _curvedAnimations = List.generate(widget.barCount, (index) {
       final delay = index / widget.barCount;
-      // Ensure end value never exceeds 1.0
       final endValue = (delay + 0.5).clamp(0.0, 1.0);
-      return Tween<double>(begin: 0.3, end: 1.0).animate(
-        CurvedAnimation(
-          parent: _animationController,
-          curve: Interval(delay, endValue, curve: Curves.easeInOut),
-        ),
+      return CurvedAnimation(
+        parent: _animationController,
+        curve: Interval(delay, endValue, curve: Curves.easeInOut),
       );
+    });
+    _barAnimations = List.generate(widget.barCount, (index) {
+      return Tween<double>(begin: 0.3, end: 1.0).animate(_curvedAnimations[index]);
     });
   }
 
@@ -78,9 +86,10 @@ class _WaveLoaderState extends State<WaveLoader>
 
   @override
   void dispose() {
-    // Stop the animation before disposing
     _animationController.stop();
-    // Only dispose the controller if we created it internally
+    for (final ca in _curvedAnimations) {
+      ca.dispose();
+    }
     if (widget.controller == null) {
       _animationController.dispose();
     }

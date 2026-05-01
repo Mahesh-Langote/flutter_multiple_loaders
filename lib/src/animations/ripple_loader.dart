@@ -30,6 +30,7 @@ class RippleLoader extends StatefulWidget {
 class _RippleLoaderState extends State<RippleLoader>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late List<CurvedAnimation> _curvedAnimations;
   late List<Animation<double>> _scaleAnimations;
   late List<Animation<double>> _opacityAnimations;
   late LoaderController _loaderController;
@@ -42,6 +43,7 @@ class _RippleLoaderState extends State<RippleLoader>
       duration: Duration(milliseconds: widget.options.durationMs),
     );
 
+    _curvedAnimations = [];
     _initializeAnimations();
 
     _loaderController = widget.controller ?? LoaderController();
@@ -55,37 +57,31 @@ class _RippleLoaderState extends State<RippleLoader>
   }
 
   void _initializeAnimations() {
+    for (final ca in _curvedAnimations) {
+      ca.dispose();
+    }
+    _curvedAnimations = [];
     _scaleAnimations = [];
     _opacityAnimations = [];
 
     for (int i = 0; i < widget.rippleCount; i++) {
       final double delay = i / widget.rippleCount;
-
-      // Scale animation: starts small and grows to full size
-      final scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-          parent: _animationController,
-          curve: Interval(delay, 1.0, curve: Curves.easeOut),
-        ),
+      final ca = CurvedAnimation(
+        parent: _animationController,
+        curve: Interval(delay, 1.0, curve: Curves.easeOut),
       );
-      _scaleAnimations.add(scaleAnimation);
-
-      // Opacity animation: starts opaque and fades out
-      final opacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(
-          parent: _animationController,
-          curve: Interval(delay, 1.0, curve: Curves.easeOut),
-        ),
-      );
-      _opacityAnimations.add(opacityAnimation);
+      _curvedAnimations.add(ca);
+      _scaleAnimations.add(Tween<double>(begin: 0.0, end: 1.0).animate(ca));
+      _opacityAnimations.add(Tween<double>(begin: 1.0, end: 0.0).animate(ca));
     }
   }
 
   @override
   void dispose() {
-    // Stop the animation before disposing
     _animationController.stop();
-    // Only dispose the controller if we created it internally
+    for (final ca in _curvedAnimations) {
+      ca.dispose();
+    }
     if (widget.controller == null) {
       _animationController.dispose();
     }

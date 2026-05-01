@@ -24,6 +24,8 @@ class _PageTurningLoaderState extends State<PageTurningLoader>
     with TickerProviderStateMixin {
   late AnimationController _mainController;
   late AnimationController _pageController;
+  late CurvedAnimation _pageFlipCurve;
+  late CurvedAnimation _curlCurve;
   late Animation<double> _pageFlipAnimation;
   late Animation<double> _curlAnimation;
   late LoaderController _loaderController;
@@ -51,19 +53,17 @@ class _PageTurningLoaderState extends State<PageTurningLoader>
       duration: const Duration(milliseconds: 1000),
     );
 
-    _pageFlipAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _pageController,
-        curve: const Interval(0.0, 0.8, curve: Curves.easeInOutCubic),
-      ),
+    _pageFlipCurve = CurvedAnimation(
+      parent: _pageController,
+      curve: const Interval(0.0, 0.8, curve: Curves.easeInOutCubic),
     );
+    _pageFlipAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_pageFlipCurve);
 
-    _curlAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _pageController,
-        curve: const Interval(0.0, 0.4, curve: Curves.easeOutCubic),
-      ),
+    _curlCurve = CurvedAnimation(
+      parent: _pageController,
+      curve: const Interval(0.0, 0.4, curve: Curves.easeOutCubic),
     );
+    _curlAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_curlCurve);
 
     _loaderController = widget.controller ?? LoaderController();
     _loaderController.initialize(_mainController);
@@ -125,6 +125,8 @@ class _PageTurningLoaderState extends State<PageTurningLoader>
 
   @override
   void dispose() {
+    _pageFlipCurve.dispose();
+    _curlCurve.dispose();
     _mainController.dispose();
     _pageController.dispose();
     super.dispose();
