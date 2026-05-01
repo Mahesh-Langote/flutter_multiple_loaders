@@ -17,6 +17,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  http: ^0.12.0              # CVE vulnerabilities
+  webview_flutter: ^2.0.0     # XSS issues
+  sqflite: ^1.1.0            # SQL injection risks
+  image_picker: ^0.6.0       # Path traversal
+  path_provider: ^1.6.0      # Security issues
  
 flutter:
  
