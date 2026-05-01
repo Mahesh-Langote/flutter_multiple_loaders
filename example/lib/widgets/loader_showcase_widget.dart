@@ -1,21 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-/// A widget that showcases a single loader with its description and code snippet
 class LoaderShowcaseWidget extends StatelessWidget {
-  /// The title of the loader
   final String title;
-
-  /// A brief description of the loader
   final String description;
-
-  /// The loader widget to display
   final Widget loader;
-
-  /// The default code snippet to display when viewing the loader's code
   final String? codeSnippet;
 
-  /// Creates a loader showcase widget
   const LoaderShowcaseWidget({
     super.key,
     required this.title,
@@ -23,81 +14,120 @@ class LoaderShowcaseWidget extends StatelessWidget {
     required this.loader,
     this.codeSnippet,
   });
+
   @override
   Widget build(BuildContext context) {
-    // Get screen dimensions for responsive adjustments
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final screenSize = MediaQuery.of(context).size;
     final bool isSmallScreen = screenSize.width < 600;
 
-    // Extract loader type for code snippet
     String loaderName = title.replaceAll(' Loader', '');
     String snippet = codeSnippet ?? _getDefaultCodeSnippet(loaderName);
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Calculate the showcase size based on available space
-        final double showcaseSize =
-            isSmallScreen
-                ? constraints.maxWidth * 0.8
-                : min(constraints.maxWidth * 0.7, constraints.maxHeight * 0.6);
+        final double showcaseSize = isSmallScreen
+            ? constraints.maxWidth * 0.85
+            : min(constraints.maxWidth * 0.75, constraints.maxHeight * 0.7);
 
         return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Header with title and code button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              // Header
+              Column(
                 children: [
-                  Flexible(
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                     child: Text(
-                      title,
+                      'ANIMATION PREVIEW',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: isSmallScreen ? 18 : 22,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 2,
+                        color: theme.colorScheme.primary,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    icon: const Icon(Icons.code, color: Colors.blueGrey),
-                    tooltip: 'View code snippet',
-                    onPressed: () {
-                      _showCodeSnippetBottomSheet(context, title, snippet);
-                    },
+                  const SizedBox(height: 16),
+                  Text(
+                    title,
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -0.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      description,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        height: 1.5,
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
-              // Description
-              Text(
-                description,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: isSmallScreen ? 14 : 16,
-                  color: Colors.grey,
-                ),
-              ),
-              SizedBox(height: isSmallScreen ? 16 : 24),
-              // Loader container with animated appearance
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: showcaseSize,
-                height: showcaseSize,
-                padding: EdgeInsets.all(isSmallScreen ? 16 : 24),
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: .05),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: .03),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+              
+              const SizedBox(height: 32),
+              
+              // Main Loader Container (Glassmorphism inspired)
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Container(
+                    width: showcaseSize,
+                    height: showcaseSize,
+                    decoration: BoxDecoration(
+                      color: isDark 
+                        ? Colors.white.withValues(alpha: 0.03) 
+                        : Colors.black.withValues(alpha: 0.02),
+                      borderRadius: BorderRadius.circular(32),
+                      border: Border.all(
+                        color: isDark 
+                          ? Colors.white.withValues(alpha: 0.05) 
+                          : Colors.black.withValues(alpha: 0.05),
+                        width: 1.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 30,
+                          offset: const Offset(0, 15),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Center(child: loader),
+                    child: Center(
+                      child: Transform.scale(
+                        scale: isSmallScreen ? 1.1 : 1.3,
+                        child: loader,
+                      ),
+                    ),
+                  ),
+                  
+                  // Code Button
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: FloatingActionButton.small(
+                      heroTag: 'code_btn_$title',
+                      onPressed: () => _showCodeSnippetBottomSheet(context, title, snippet),
+                      backgroundColor: theme.colorScheme.secondaryContainer,
+                      foregroundColor: theme.colorScheme.onSecondaryContainer,
+                      elevation: 0,
+                      child: const Icon(Icons.code_rounded),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -111,222 +141,119 @@ class LoaderShowcaseWidget extends StatelessWidget {
     String title,
     String codeSnippet,
   ) {
-    // Check if we're on a small screen
     final screenSize = MediaQuery.of(context).size;
     final bool isSmallScreen = screenSize.width < 600;
 
-    // For code snippets, use a different approach based on platform
     if (isSmallScreen) {
-      // Use bottom sheet for small screens (mobile)
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         useSafeArea: true,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
         ),
         builder: (context) {
           return DraggableScrollableSheet(
-            initialChildSize: 0.6,
-            minChildSize: 0.3,
-            maxChildSize: 0.9,
+            initialChildSize: 0.7,
+            minChildSize: 0.5,
+            maxChildSize: 0.95,
             expand: false,
             builder: (context, scrollController) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Drag handle
-                    Center(
-                      child: Container(
-                        height: 4,
-                        width: 40,
-                        margin: const EdgeInsets.only(bottom: 16),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-
-                    // Header
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            '$title Code',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.content_copy),
-                              tooltip: 'Copy to clipboard',
-                              onPressed: () {
-                                // Copy to clipboard
-                                // This should use Clipboard.setData in a real implementation
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Code copied to clipboard'),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.close),
-                              tooltip: 'Close',
-                              onPressed: () => Navigator.pop(context),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Code snippet
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: SingleChildScrollView(
-                          controller: scrollController,
-                          child: SelectableText(
-                            codeSnippet,
-                            style: const TextStyle(
-                              fontFamily: 'monospace',
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
+              return _buildCodePanel(context, title, codeSnippet, scrollController);
             },
           );
         },
       );
     } else {
-      // Use dialog for larger screens (tablet/desktop)
       showDialog(
         context: context,
-        builder:
-            (context) => Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Container(
-                constraints: BoxConstraints(
-                  maxWidth: min(screenSize.width * 0.8, 800),
-                  maxHeight: min(screenSize.height * 0.8, 600),
-                ),
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '$title Code Example',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.content_copy),
-                              tooltip: 'Copy to clipboard',
-                              onPressed: () {
-                                // Copy to clipboard
-                                // This should use Clipboard.setData in a real implementation
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Code copied to clipboard'),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.close),
-                              tooltip: 'Close',
-                              onPressed: () => Navigator.pop(context),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Code snippet
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: SingleChildScrollView(
-                          child: SelectableText(
-                            codeSnippet,
-                            style: const TextStyle(
-                              fontFamily: 'monospace',
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    // Footer
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text('Close'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+        builder: (context) => Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          child: Container(
+            constraints: BoxConstraints(
+              maxWidth: min(screenSize.width * 0.7, 700),
+              maxHeight: min(screenSize.height * 0.8, 600),
             ),
+            child: _buildCodePanel(context, title, codeSnippet, null),
+          ),
+        ),
       );
     }
   }
 
-  String _getDefaultCodeSnippet(String loaderName) {
-    // Generate code snippet based on loader name
-    String baseName = loaderName.replaceAll(' ', '');
+  Widget _buildCodePanel(BuildContext context, String title, String codeSnippet, ScrollController? scrollController) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 20, 16, 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Code Snippet',
+                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.copy_all_rounded),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Copied to clipboard')),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        // Code Content
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: colorScheme.outlineVariant),
+            ),
+            child: SingleChildScrollView(
+              controller: scrollController,
+              physics: const BouncingScrollPhysics(),
+              child: SelectableText(
+                codeSnippet,
+                style: const TextStyle(
+                  fontFamily: 'monospace',
+                  fontSize: 13,
+                  height: 1.5,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _getDefaultCodeSnippet(String loaderName) {
+    String baseName = loaderName.replaceAll(' ', '');
     Map<String, String> loaderColors = {
       'DNAHelix': 'Colors.deepPurple, secondaryColor: Colors.pinkAccent',
-      'MorphingShape':
-          'Colors.teal, secondaryColor: Colors.amber, tertiaryColor: Colors.deepOrange',
-      'GalaxySpiral':
-          'Colors.blue, secondaryColor: Colors.purple, tertiaryColor: Colors.white',
-      'ParticleVortex':
-          'Colors.deepOrange, secondaryColor: Colors.amber, tertiaryColor: Colors.redAccent',
+      'MorphingShape': 'Colors.teal, secondaryColor: Colors.amber, tertiaryColor: Colors.deepOrange',
+      'GalaxySpiral': 'Colors.blue, secondaryColor: Colors.purple, tertiaryColor: Colors.white',
+      'ParticleVortex': 'Colors.deepOrange, secondaryColor: Colors.amber, tertiaryColor: Colors.redAccent',
       'FractalTree': 'Colors.green, secondaryColor: Colors.lightGreenAccent',
       'LiquidBlob': 'Colors.blueAccent, secondaryColor: Colors.cyanAccent',
       'Circle': 'Colors.blue',
@@ -342,43 +269,18 @@ class LoaderShowcaseWidget extends StatelessWidget {
     };
 
     String colors = loaderColors[baseName] ?? 'Colors.blue';
-    int duration =
-        baseName == 'GalaxySpiral'
-            ? 6000
-            : baseName == 'FractalTree'
-            ? 5000
-            : baseName == 'Spinner' ||
-                baseName == 'Circle' ||
-                baseName == 'Wave'
-            ? 1500
-            : 3000;
+    int duration = baseName == 'GalaxySpiral' ? 6000 : baseName == 'FractalTree' ? 5000 : 3000;
 
     return 'import \'package:flutter/material.dart\';\n'
         'import \'package:flutter_multiple_loaders/flutter_multiple_loaders.dart\';\n\n'
         'Widget build(BuildContext context) {\n'
-        '  return Center(\n'
-        '    child: ${baseName}Loader(\n'
-        '      options: LoaderOptions(\n'
-        '        color: $colors,\n'
-        '        size: LoaderSize.large,\n'
-        '        durationMs: $duration,\n'
-        '      ),\n'
+        '  return ${baseName}Loader(\n'
+        '    options: LoaderOptions(\n'
+        '      color: $colors,\n'
+        '      size: LoaderSize.large,\n'
+        '      durationMs: $duration,\n'
         '    ),\n'
         '  );\n'
-        '}\n\n'
-        '// With controller example:\n'
-        'final LoaderController controller = LoaderController();\n\n'
-        '${baseName}Loader(\n'
-        '  controller: controller,\n'
-        '  options: LoaderOptions(\n'
-        '    color: $colors,\n'
-        '    size: LoaderSize.large,\n'
-        '    durationMs: $duration,\n'
-        '  ),\n'
-        ');\n\n'
-        '// Controller methods:\n'
-        '// controller.start();\n'
-        '// controller.stop();\n'
-        '// controller.reset();';
+        '}';
   }
 }

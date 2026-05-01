@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multiple_loaders/flutter_multiple_loaders.dart';
 import 'widgets/loader_category_manager.dart';
-import 'widgets/loader_control_panel.dart'; // Using the fixed version
+import 'widgets/loader_control_panel.dart';
 import 'widgets/loader_showcase_widget.dart';
 
-/// A unified screen showcasing all loaders in a well-organized manner
 class UnifiedLoaderShowcaseFixed extends StatefulWidget {
-  /// Creates a [UnifiedLoaderShowcaseFixed].
   const UnifiedLoaderShowcaseFixed({super.key});
 
   @override
@@ -19,7 +17,6 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
   final LoaderController _controller = LoaderController();
   late TabController _tabController;
 
-  // Current loader state
   bool _isAnimating = true;
   LoaderSize _selectedSize = LoaderSize.large;
   Color _primaryColor = Colors.blue;
@@ -29,7 +26,6 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
   int _durationMs = 1500;
   double _strokeWidth = 4.0;
 
-  // Current loader and category selection
   int _selectedCategoryIndex = 0;
   int _selectedLoaderIndex = 0;
   List<LoaderCategory> _categories = [];
@@ -37,15 +33,9 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
   @override
   void initState() {
     super.initState();
-    // Get all loader categories
     _categories = LoaderCategoryManager.getCategories();
-
-    // Set up tab controller for all categories
     _tabController = TabController(length: _categories.length, vsync: this);
-
     _tabController.addListener(_handleTabChange);
-
-    // Set initial loader values
     _updateSelectedLoader(0, 0);
   }
 
@@ -78,7 +68,7 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
         _secondaryColor =
             loaderInfo.secondaryColor ?? _primaryColor.withValues(alpha: 0.7);
         _tertiaryColor = loaderInfo.tertiaryColor ?? Colors.white;
-        _quaternaryColor = Colors.purple; // Default quaternary color
+        _quaternaryColor = Colors.purple;
         _durationMs = loaderInfo.durationMs;
         _strokeWidth = loaderInfo.strokeWidth;
       });
@@ -87,9 +77,9 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
 
   @override
   Widget build(BuildContext context) {
-    // Get screen size for responsive layout
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final screenSize = MediaQuery.of(context).size;
-    final bool isSmallScreen = screenSize.width < 600;
     final bool isLandscape = screenSize.width > screenSize.height;
 
     if (_categories.isEmpty) {
@@ -97,10 +87,8 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
     }
 
     final currentCategory = _categories[_selectedCategoryIndex];
-    final currentLoaders = currentCategory.loaders;
-    final currentLoader = currentLoaders[_selectedLoaderIndex];
+    final currentLoader = currentCategory.loaders[_selectedLoaderIndex];
 
-    // Create loader options based on current state
     final options = LoaderOptions(
       color: _primaryColor,
       size: _selectedSize,
@@ -113,202 +101,192 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
       strokeWidth: _strokeWidth,
     );
 
-    // Create the current loader widget
     final loaderWidget = currentLoader.createLoader(options, _controller);
 
-    // Create an adaptive layout based on screen orientation and size
-    Widget content;
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        title: const Text('Showcase Gallery', style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+        ),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Category Selector
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 12),
+              height: 40,
+              child: TabBar(
+                controller: _tabController,
+                isScrollable: true,
+                tabAlignment: TabAlignment.center,
+                dividerColor: Colors.transparent,
+                indicatorSize: TabBarIndicatorSize.label,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: colorScheme.primary,
+                ),
+                labelColor: colorScheme.onPrimary,
+                unselectedLabelColor: colorScheme.onSurfaceVariant,
+                tabs: _categories.map((c) => Tab(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(c.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                )).toList(),
+              ),
+            ),
 
-    if (isLandscape && screenSize.width >= 900) {
-      // Wide landscape layout - side by side
-      content = Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Left panel - showcase
-          Expanded(
-            flex: 3,
+            // Loader Sub-selection
+            _buildLoaderChips(currentCategory.loaders),
+
+            Expanded(
+              child: isLandscape && screenSize.width >= 900
+                ? Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: LoaderShowcaseWidget(
+                          title: currentLoader.name,
+                          description: currentLoader.description,
+                          loader: loaderWidget,
+                        ),
+                      ),
+                      const VerticalDivider(width: 1),
+                      SizedBox(
+                        width: 350,
+                        child: _buildControlPanel(context),
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      Expanded(
+                        child: LoaderShowcaseWidget(
+                          title: currentLoader.name,
+                          description: currentLoader.description,
+                          loader: loaderWidget,
+                        ),
+                      ),
+                      _buildMobileControlBar(context),
+                    ],
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMobileControlBar(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: Row(
+          children: [
+            Expanded(
+              child: FilledButton.icon(
+                onPressed: () => _showConfigurationSheet(context),
+                icon: const Icon(Icons.tune_rounded),
+                label: const Text('Configure Loader'),
+              ),
+            ),
+            const SizedBox(width: 12),
+            IconButton.filledTonal(
+              onPressed: () {
+                setState(() => _isAnimating = !_isAnimating);
+                if (_isAnimating) {
+                  _controller.start();
+                } else {
+                  _controller.stop();
+                }
+              },
+              icon: Icon(_isAnimating ? Icons.pause_rounded : Icons.play_arrow_rounded),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showConfigurationSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setSheetState) => DraggableScrollableSheet(
+          initialChildSize: 0.6,
+          minChildSize: 0.4,
+          maxChildSize: 0.9,
+          expand: false,
+          builder: (context, scrollController) => Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+            ),
             child: Column(
               children: [
-                // Category tabs
-                TabBar(
-                  controller: _tabController,
-                  isScrollable: true,
-                  tabAlignment: TabAlignment.start,
-                  tabs:
-                      _categories
-                          .map((category) => Tab(text: category.name))
-                          .toList(),
+                const SizedBox(height: 12),
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
-
-                // Loader selection
-                _buildLoaderSelection(currentLoaders),
-
-                // Loader showcase
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: LoaderShowcaseWidget(
-                      title: '${currentLoader.name} Loader',
-                      description: currentLoader.description,
-                      loader: loaderWidget,
-                    ),
+                  child: _buildControlPanel(
+                    context, 
+                    isBottomSheet: true,
+                    onUpdate: () => setSheetState(() {}),
                   ),
                 ),
               ],
             ),
           ),
-
-          // Right panel - controls
-          Expanded(
-            flex: 2,
-            child: LoaderControlPanel(
-              controller: _controller,
-              isAnimating: _isAnimating,
-              selectedSize: _selectedSize,
-              primaryColor: _primaryColor,
-              secondaryColor: _secondaryColor,
-              tertiaryColor: _tertiaryColor,
-              quaternaryColor: _quaternaryColor,
-              durationMs: _durationMs,
-              strokeWidth: _strokeWidth,
-              showStrokeWidth: currentLoader.usesStrokeWidth,
-              onAnimatingChanged:
-                  (value) => setState(() => _isAnimating = value),
-              onSizeChanged: (value) => setState(() => _selectedSize = value),
-              onPrimaryColorChanged:
-                  (value) => setState(() => _primaryColor = value),
-              onSecondaryColorChanged:
-                  (value) => setState(() => _secondaryColor = value),
-              onTertiaryColorChanged:
-                  (value) => setState(() => _tertiaryColor = value),
-              onQuaternaryColorChanged:
-                  (value) => setState(() => _quaternaryColor = value),
-              onDurationChanged: (value) => setState(() => _durationMs = value),
-              onStrokeWidthChanged:
-                  currentLoader.usesStrokeWidth
-                      ? (value) => setState(() => _strokeWidth = value)
-                      : null,
-            ),
-          ),
-        ],
-      );
-    } else {
-      // Portrait or narrow layout - stacked vertically
-      content = Column(
-        children: [
-          // Category tabs with scrollable behavior for small screens
-          TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            tabs:
-                _categories
-                    .map((category) => Tab(text: category.name))
-                    .toList(),
-          ),
-
-          // Loader selection
-          _buildLoaderSelection(currentLoaders),
-
-          // Loader showcase
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(isSmallScreen ? 8 : 16),
-              child: LoaderShowcaseWidget(
-                title: '${currentLoader.name} Loader',
-                description: currentLoader.description,
-                loader: loaderWidget,
-              ),
-            ),
-          ),
-
-          // Control panel
-          LoaderControlPanel(
-            controller: _controller,
-            isAnimating: _isAnimating,
-            selectedSize: _selectedSize,
-            primaryColor: _primaryColor,
-            secondaryColor: _secondaryColor,
-            tertiaryColor: _tertiaryColor,
-            quaternaryColor: _quaternaryColor,
-            durationMs: _durationMs,
-            strokeWidth: _strokeWidth,
-            showStrokeWidth: currentLoader.usesStrokeWidth,
-            onAnimatingChanged: (value) => setState(() => _isAnimating = value),
-            onSizeChanged: (value) => setState(() => _selectedSize = value),
-            onPrimaryColorChanged:
-                (value) => setState(() => _primaryColor = value),
-            onSecondaryColorChanged:
-                (value) => setState(() => _secondaryColor = value),
-            onTertiaryColorChanged:
-                (value) => setState(() => _tertiaryColor = value),
-            onQuaternaryColorChanged:
-                (value) => setState(() => _quaternaryColor = value),
-            onDurationChanged: (value) => setState(() => _durationMs = value),
-            onStrokeWidthChanged:
-                currentLoader.usesStrokeWidth
-                    ? (value) => setState(() => _strokeWidth = value)
-                    : null,
-          ),
-        ],
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Flutter Multiple Loaders',
-          style: isSmallScreen ? const TextStyle(fontSize: 18) : null,
         ),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            onPressed: () => _showInfoDialog(context),
-            tooltip: 'About',
-          ),
-        ],
       ),
-      body: SafeArea(child: content),
     );
   }
 
-  // Extract loader selection into a separate method
-  Widget _buildLoaderSelection(List<LoaderInfo> loaders) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isSmallScreen = screenWidth < 600;
-
-    return SizedBox(
-      height: isSmallScreen ? 50 : 60,
+  Widget _buildLoaderChips(List<LoaderInfo> loaders) {
+    return Container(
+      height: 50,
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(
-          horizontal: isSmallScreen ? 8 : 16,
-          vertical: isSmallScreen ? 6 : 8,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: loaders.length,
         itemBuilder: (context, index) {
           final isSelected = index == _selectedLoaderIndex;
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: ActionChip(
-              avatar: Icon(
-                Icons.circle,
-                color: loaders[index].primaryColor,
-                size: 16,
-              ),
-              label: Text(
-                loaders[index].name,
-                style: TextStyle(
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                ),
-              ),
-              backgroundColor:
-                  isSelected
-                      ? Theme.of(context).colorScheme.primaryContainer
-                      : null,
-              onPressed:
-                  () => _updateSelectedLoader(_selectedCategoryIndex, index),
+            padding: const EdgeInsets.only(right: 8),
+            child: FilterChip(
+              label: Text(loaders[index].name),
+              selected: isSelected,
+              onSelected: (_) => _updateSelectedLoader(_selectedCategoryIndex, index),
+              showCheckmark: false,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
           );
         },
@@ -316,43 +294,54 @@ class _UnifiedLoaderShowcaseFixedState extends State<UnifiedLoaderShowcaseFixed>
     );
   }
 
-  // Add info dialog
-  void _showInfoDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('About Flutter Multiple Loaders'),
-            content: const SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'A comprehensive collection of customizable loading animations for Flutter applications.',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    'Features:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8),
-                  Text('• Multiple loader types'),
-                  Text('• Customizable colors'),
-                  Text('• Adjustable sizes'),
-                  Text('• Animation control'),
-                  Text('• Responsive design'),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Close'),
-              ),
-            ],
-          ),
+  Widget _buildControlPanel(BuildContext context, {bool isBottomSheet = false, VoidCallback? onUpdate}) {
+    final currentCategory = _categories[_selectedCategoryIndex];
+    final currentLoader = currentCategory.loaders[_selectedLoaderIndex];
+
+    return LoaderControlPanel(
+      controller: _controller,
+      isAnimating: _isAnimating,
+      selectedSize: _selectedSize,
+      primaryColor: _primaryColor,
+      secondaryColor: _secondaryColor,
+      tertiaryColor: _tertiaryColor,
+      quaternaryColor: _quaternaryColor,
+      durationMs: _durationMs,
+      strokeWidth: _strokeWidth,
+      showStrokeWidth: currentLoader.usesStrokeWidth,
+      isBottomSheet: isBottomSheet,
+      onAnimatingChanged: (v) => setState(() {
+        _isAnimating = v;
+        onUpdate?.call();
+      }),
+      onSizeChanged: (v) => setState(() {
+        _selectedSize = v;
+        onUpdate?.call();
+      }),
+      onPrimaryColorChanged: (v) => setState(() {
+        _primaryColor = v;
+        onUpdate?.call();
+      }),
+      onSecondaryColorChanged: (v) => setState(() {
+        _secondaryColor = v;
+        onUpdate?.call();
+      }),
+      onTertiaryColorChanged: (v) => setState(() {
+        _tertiaryColor = v;
+        onUpdate?.call();
+      }),
+      onQuaternaryColorChanged: (v) => setState(() {
+        _quaternaryColor = v;
+        onUpdate?.call();
+      }),
+      onDurationChanged: (v) => setState(() {
+        _durationMs = v;
+        onUpdate?.call();
+      }),
+      onStrokeWidthChanged: (v) => setState(() {
+        _strokeWidth = v;
+        onUpdate?.call();
+      }),
     );
   }
 }
